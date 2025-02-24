@@ -21,8 +21,8 @@ public class MarcaService {
     }
 
     // Obtener una marca por ID
-    public Optional<Marca> getById(Long marcaId) {
-        return marcaRepository.findById(marcaId);
+    public Optional<Marca> getById(Long idMarca) {
+        return marcaRepository.findById(idMarca);
     }
 
     // Crear una nueva marca
@@ -31,18 +31,18 @@ public class MarcaService {
     }
 
     // Actualizar una marca existente
-    public Marca update(Long marcaId, Marca marca) {
-        if (marcaRepository.existsById(marcaId)) {
-            marca.setMarcaId(marcaId);
+    public Marca update(Long idMarca, Marca marca) {
+        if (marcaRepository.existsById(idMarca)) {
+            marca.setidMarca(idMarca);
             return marcaRepository.save(marca);
         }
         return null; // O lanzar excepción
     }
 
     // Eliminar una marca por ID
-    public boolean delete(Long marcaId) {
-        if (marcaRepository.existsById(marcaId)) {
-            marcaRepository.deleteById(marcaId);
+    public boolean delete(Long idMarca) {
+        if (marcaRepository.existsById(idMarca)) {
+            marcaRepository.deleteById(idMarca);
             return true;
         }
         return false; // O lanzar excepción
@@ -50,6 +50,15 @@ public class MarcaService {
 
     // Filtro para marcas
     public List<Marca> filter(String nombreMarca, Status status) {
-        return marcaRepository.findByNombreMarcaContainingIgnoreCaseAndStatus(nombreMarca, status);
+        if (nombreMarca != null && status != null) {
+            return marcaRepository.findByNombreMarcaAndStatus(nombreMarca, status);
+        } else if (nombreMarca != null) {
+            return marcaRepository.findByNombreMarca(nombreMarca);
+        } else if (status != null) {
+            return marcaRepository.findByStatus(status);
+        } else {
+            return marcaRepository.findAll();
+        }
     }
+
 }

@@ -13,7 +13,7 @@ public class Modelo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long modeloId;
+    private Long idModelo;
 
     @NotBlank(message = "El nombre del modelo es obligatorio")
     @Column(name = "nombre_modelo", nullable = false, unique = true)
@@ -28,8 +28,8 @@ public class Modelo {
     private Status status;
 
     @ManyToOne
-    @JoinColumn(name = "marca_id", nullable = false)
-    private Marca marca; // Relación con Marca
+    @JoinColumn(name = "idMarca")
+    private Marca marca;
 
     @Column(updatable = false)
     private LocalDateTime createdAt;
@@ -46,12 +46,12 @@ public class Modelo {
     }
 
     // Getters y setters
-    public Long getModeloId() {
-        return modeloId;
+    public Long getidModelo() {
+        return idModelo;
     }
 
-    public void setModeloId(Long modeloId) {
-        this.modeloId = modeloId;
+    public void setidModelo(Long idModelo) {
+        this.idModelo = idModelo;
     }
 
     public String getNombreModelo() {

@@ -1,5 +1,6 @@
 package com.sisgebi.service;
 
+import com.sisgebi.entity.Marca;
 import com.sisgebi.entity.Modelo;
 import com.sisgebi.enums.Status;
 import com.sisgebi.repository.ModeloRepository;
@@ -33,7 +34,7 @@ public class ModeloService {
     // Actualizar modelo
     public Modelo update(Long id, Modelo modelo) {
         if (modeloRepository.existsById(id)) {
-            modelo.setModeloId(id);
+            modelo.setidModelo(id);
             return modeloRepository.save(modelo);
         }
         return null;
@@ -45,18 +46,29 @@ public class ModeloService {
     }
 
     // Filtro para buscar modelos por nombre, estado y marca
-    public List<Modelo> filter(String nombreModelo, Status status, Long marcaId) {
-        if (nombreModelo != null && status != null && marcaId != null) {
-            return modeloRepository.findByNombreModeloAndStatusAndMarcaId(nombreModelo, status, marcaId);
+    public List<Modelo> filter(Long idMarca, String nombreModelo, Status status) {
+        Marca marca = null;
+        if (idMarca != null) {
+            marca = new Marca();
+            marca.setidMarca(idMarca); // Crear el objeto Marca a partir del ID
+        }
+
+        // Realizar la búsqueda con los parámetros
+        if (marca != null && nombreModelo != null && status != null) {
+            return modeloRepository.findByMarcaAndNombreModeloAndStatus(marca, nombreModelo, status);
+        } else if (marca != null && nombreModelo != null) {
+            return modeloRepository.findByMarcaAndNombreModelo(marca, nombreModelo);
+        } else if (marca != null && status != null) {
+            return modeloRepository.findByMarcaAndStatus(marca, status);
         } else if (nombreModelo != null && status != null) {
             return modeloRepository.findByNombreModeloAndStatus(nombreModelo, status);
+        } else if (marca != null) {
+            return modeloRepository.findByMarca(marca);
         } else if (nombreModelo != null) {
             return modeloRepository.findByNombreModelo(nombreModelo);
         } else if (status != null) {
             return modeloRepository.findByStatus(status);
-        } else if (marcaId != null) {
-            return modeloRepository.findByMarcaId(marcaId);
         }
-        return modeloRepository.findAll();
+        return modeloRepository.findAll(); // Si no hay filtros, retornar todos
     }
 }

@@ -11,5 +11,7 @@ import java.util.List;
 public interface MarcaRepository extends JpaRepository<Marca, Long> {
     
     // Filtro por nombre y estado
-    List<Marca> findByNombreMarcaContainingIgnoreCaseAndStatus(String nombreMarca, Status status);
+    List<Marca> findByNombreMarcaAndStatus (String nombre, Status status);
+    List<Marca> findByNombreMarca (String nombreMarca);
+    List<Marca> findByStatus (Status status);
 }

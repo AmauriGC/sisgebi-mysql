@@ -55,9 +55,10 @@ public class ModeloController {
     // Filtro para buscar modelos por nombre, estado y marca
     @GetMapping("/filter")
     public List<Modelo> filter(
+            @RequestParam(required = false) Long idMarca, // Recibimos el id de la marca
             @RequestParam(required = false) String nombreModelo,
-            @RequestParam(required = false) Status status,
-            @RequestParam(required = false) Long marcaId) {
-        return modeloService.filter(nombreModelo, status, marcaId);
+            @RequestParam(required = false) Status status) {
+
+        return modeloService.filter(idMarca, nombreModelo, status);  // Llamada directa al servicio
     }
 }

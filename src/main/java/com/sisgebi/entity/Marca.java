@@ -13,7 +13,7 @@ public class Marca {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long marcaId;
+    private Long idMarca;
 
     @NotBlank(message = "El nombre de la marca es obligatorio")
     @Column(name = "nombre_marca", nullable = false, unique = true)
@@ -39,12 +39,12 @@ public class Marca {
     }
 
     // Getters y setters
-    public Long getMarcaId() {
-        return marcaId;
+    public Long getidMarca() {
+        return idMarca;
     }
 
-    public void setMarcaId(Long marcaId) {
-        this.marcaId = marcaId;
+    public void setidMarca(Long idMarca) {
+        this.idMarca = idMarca;
     }
 
     public String getNombreMarca() {
