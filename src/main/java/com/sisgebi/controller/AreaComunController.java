@@ -4,8 +4,6 @@ import com.sisgebi.entity.AreaComun;
 import com.sisgebi.enums.Status;
 import com.sisgebi.service.AreaComunService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,30 +28,26 @@ public class AreaComunController {
 
     // Obtener área por ID
     @GetMapping("/{id}")
-    public ResponseEntity<AreaComun> getById(@PathVariable Long id) {
-        Optional<AreaComun> areaComun = areaComunService.getById(id);
-        return areaComun.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public Optional<AreaComun> getById(@PathVariable Long id) {
+        return areaComunService.getById(id);
     }
 
     // Crear una nueva área
     @PostMapping
-    public ResponseEntity<AreaComun> create(@RequestBody AreaComun areaComun) {
-        AreaComun createdArea = areaComunService.create(areaComun);
-        return new ResponseEntity<>(createdArea, HttpStatus.CREATED);
+    public AreaComun create(@RequestBody AreaComun areaComun) {
+        return areaComunService.create(areaComun);
     }
 
     // Actualizar área
     @PutMapping("/{id}")
-    public ResponseEntity<AreaComun> update(@PathVariable Long id, @RequestBody AreaComun areaComun) {
-        AreaComun updatedArea = areaComunService.update(id, areaComun);
-        return updatedArea != null ? ResponseEntity.ok(updatedArea) : ResponseEntity.notFound().build();
+    public AreaComun update(@PathVariable Long id, @RequestBody AreaComun areaComun) {
+        return areaComunService.update(id, areaComun);
     }
 
     // Eliminar área
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public void delete(@PathVariable Long id) {
         areaComunService.delete(id);
-        return ResponseEntity.noContent().build();
     }
 
     // Filtro para buscar áreas por nombre y estado
