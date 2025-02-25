@@ -48,8 +48,8 @@ public class MarcaController {
 
     // Filtro de marcas
     @GetMapping("/filter")
-    public List<Marca> filter(@RequestParam(required = false) String nombreMarca,
+    public List<Marca> filter(@RequestParam(required = false) Boolean filtrarPorMarca,
                               @RequestParam(required = false) Status status) {
-        return marcaService.filter(nombreMarca, status);
+        return marcaService.filter(filtrarPorMarca, status);
     }
 }

@@ -49,16 +49,15 @@ public class MarcaService {
     }
 
     // Filtro para marcas
-    public List<Marca> filter(String nombreMarca, Status status) {
-        if (nombreMarca != null && status != null) {
-            return marcaRepository.findByNombreMarcaAndStatus(nombreMarca, status);
-        } else if (nombreMarca != null) {
-            return marcaRepository.findByNombreMarca(nombreMarca);
+    public List<Marca> filter(Boolean filtrarPorMarca, Status status) {
+        if (Boolean.TRUE.equals(filtrarPorMarca) && status != null) {
+            return marcaRepository.findByStatus(status); // Filtra solo por estado si se activó "Marca"
+        } else if (Boolean.TRUE.equals(filtrarPorMarca)) {
+            return marcaRepository.findAll(); // Si solo activó "Marca", trae todas
         } else if (status != null) {
-            return marcaRepository.findByStatus(status);
+            return marcaRepository.findByStatus(status); // Si solo hay status, filtra por estado
         } else {
-            return marcaRepository.findAll();
+            return marcaRepository.findAll(); // Si no hay filtros, devuelve todo
         }
     }
-
 }
