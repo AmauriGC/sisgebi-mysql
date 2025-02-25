@@ -13,20 +13,9 @@ import java.util.Optional;
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     Optional<Usuario> findByCorreo(String correo);
 
-    // Filtro por nombres, apellidos, rol y estado
-    List<Usuario> findByNombresAndStatus(String nombres, Status status);
-
-    List<Usuario> findByApellidosAndStatus(String apellidos, Status status);
-
-    List<Usuario> findByNombresAndApellidosAndStatus(String nombres, String apellidos, Status status);
-
-    List<Usuario> findByRolAndStatus(RolUsuario rol, Status status);
-
     List<Usuario> findByStatus(Status status);
 
-    List<Usuario> findByNombres(String nombres);
-
-    List<Usuario> findByApellidos(String apellidos);
-
     List<Usuario> findByRol(RolUsuario rol);
+
+    List<Usuario> findByLugarContaining(String lugar);
 }

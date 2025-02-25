@@ -1,8 +1,8 @@
 package com.sisgebi.service;
 
 import com.sisgebi.entity.Usuario;
-import com.sisgebi.enums.Status;
 import com.sisgebi.enums.RolUsuario;
+import com.sisgebi.enums.Status;
 import com.sisgebi.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,59 +16,57 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    public UsuarioService(UsuarioRepository usuarioRepository) {
+        this.usuarioRepository = usuarioRepository;
+    }
+
     // Obtener todos los usuarios
-    public List<Usuario> getAll() {
+    public List<Usuario> getAllUsuarios() {
         return usuarioRepository.findAll();
     }
 
-    // Obtener un usuario por ID
-    public Optional<Usuario> getById(Long idUsuario) {
-        return usuarioRepository.findById(idUsuario);
+    // Obtener usuario por id
+    public Optional<Usuario> getUsuarioById(Long id) {
+        return usuarioRepository.findById(id);
     }
 
     // Crear un nuevo usuario
-    public Usuario create(Usuario usuario) {
+    public Usuario createUsuario(Usuario usuario) {
         return usuarioRepository.save(usuario);
     }
 
-    // Actualizar un usuario existente
-    public Usuario update(Long idUsuario, Usuario usuario) {
-        if (usuarioRepository.existsById(idUsuario)) {
-            usuario.setId(idUsuario);
+    // Actualizar usuario
+    public Usuario updateUsuario(Long id, Usuario usuario) {
+        if (usuarioRepository.existsById(id)) {
+            usuario.setId(id);
             return usuarioRepository.save(usuario);
         }
-        return null; // O lanzar una excepción
+        return null; // O puedes lanzar una excepción
     }
 
-    // Eliminar un usuario por ID
-    public boolean delete(Long idUsuario) {
-        if (usuarioRepository.existsById(idUsuario)) {
-            usuarioRepository.deleteById(idUsuario);
-            return true;
-        }
-        return false; // O lanzar una excepción
+    // Eliminar usuario
+    public void deleteUsuario(Long id) {
+        usuarioRepository.deleteById(id);
     }
 
-    // Filtro para usuarios
-    public List<Usuario> filter(String nombres, String apellidos, RolUsuario rol, Status status) {
-        if (nombres != null && apellidos != null && rol != null && status != null) {
-            return usuarioRepository.findByNombresAndApellidosAndStatus(nombres, apellidos, status);
-        } else if (nombres != null && status != null) {
-            return usuarioRepository.findByNombresAndStatus(nombres, status);
-        } else if (apellidos != null && status != null) {
-            return usuarioRepository.findByApellidosAndStatus(apellidos, status);
-        } else if (rol != null && status != null) {
-            return usuarioRepository.findByRolAndStatus(rol, status);
-        } else if (status != null) {
-            return usuarioRepository.findByStatus(status);
-        } else if (nombres != null) {
-            return usuarioRepository.findByNombres(nombres);
-        } else if (apellidos != null) {
-            return usuarioRepository.findByApellidos(apellidos);
-        } else if (rol != null) {
-            return usuarioRepository.findByRol(rol);
-        } else {
-            return usuarioRepository.findAll();
+    // Filtros
+    public List<Usuario> filter(Boolean filterStatus, Boolean filterRol, Boolean filterLugar) {
+        // Si el filtro de status está habilitado
+        if (filterStatus != null && filterStatus) {
+            return usuarioRepository.findByStatus(Status.ACTIVO);  // O cualquier lógica que aplique para activo
         }
+
+        // Si el filtro de rol está habilitado
+        if (filterRol != null && filterRol) {
+            return usuarioRepository.findByRol(RolUsuario.ADMINISTRADOR);  // O cualquier lógica que aplique para rol
+        }
+
+        // Si el filtro de lugar está habilitado
+        if (filterLugar != null && filterLugar) {
+            return usuarioRepository.findByLugarContaining("Oficina");  // O cualquier lógica que aplique para lugar
+        }
+
+        // Si no se seleccionan filtros, se devuelven todos los usuarios
+        return usuarioRepository.findAll();
     }
 }

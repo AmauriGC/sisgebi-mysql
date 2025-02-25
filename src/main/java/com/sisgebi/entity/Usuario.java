@@ -15,11 +15,11 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotNull
+    @NotNull(message = "Los nombres son obligatorios")
     @Column(nullable = false)
     private String nombres;
 
-    @NotNull
+    @NotNull(message = "El apellidos son obligatorios")
     @Column(nullable = false)
     private String apellidos;
 
@@ -31,7 +31,7 @@ public class Usuario {
     @Column(nullable = false)
     private String contrasena; // Cifrada con BCrypt
 
-    @NotNull
+    @NotNull(message = "El lugar es obligatorio")
     @Column(nullable = false)
     private String lugar;
 

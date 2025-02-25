@@ -1,10 +1,9 @@
 package com.sisgebi.controller;
 
 import com.sisgebi.entity.Usuario;
-import com.sisgebi.enums.Status;
-import com.sisgebi.enums.RolUsuario;
 import com.sisgebi.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,46 +17,50 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
-    // Obtener todos los usuarios
-    @GetMapping
-    public List<Usuario> getAll() {
-        return usuarioService.getAll();
+    // Filtros de usuarios
+    public UsuarioController(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
     }
 
-    // Obtener un usuario por ID
+    // Obtener todos los usuarios
+    @GetMapping
+    public List<Usuario> getAllUsuarios() {
+        return usuarioService.getAllUsuarios();
+    }
+
+    // Obtener un usuario por id
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> getById(@PathVariable Long id) {
-        Optional<Usuario> usuario = usuarioService.getById(id);
+    public ResponseEntity<Usuario> getUsuarioById(@PathVariable Long id) {
+        Optional<Usuario> usuario = usuarioService.getUsuarioById(id);
         return usuario.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // Crear un nuevo usuario
     @PostMapping
-    public Usuario create(@RequestBody Usuario usuario) {
-        return usuarioService.create(usuario);
+    public ResponseEntity<Usuario> createUsuario(@RequestBody Usuario usuario) {
+        Usuario createdUsuario = usuarioService.createUsuario(usuario);
+        return new ResponseEntity<>(createdUsuario, HttpStatus.CREATED);
     }
 
     // Actualizar un usuario
     @PutMapping("/{id}")
-    public ResponseEntity<Usuario> update(@PathVariable Long id, @RequestBody Usuario usuario) {
-        Usuario updatedUsuario = usuarioService.update(id, usuario);
+    public ResponseEntity<Usuario> updateUsuario(@PathVariable Long id, @RequestBody Usuario usuario) {
+        Usuario updatedUsuario = usuarioService.updateUsuario(id, usuario);
         return updatedUsuario != null ? ResponseEntity.ok(updatedUsuario) : ResponseEntity.notFound().build();
     }
 
     // Eliminar un usuario
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        boolean deleted = usuarioService.delete(id);
-        return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+    public ResponseEntity<Void> deleteUsuario(@PathVariable Long id) {
+        usuarioService.deleteUsuario(id);
+        return ResponseEntity.noContent().build();
     }
 
-    // Filtro para usuarios
+    // Filtrar un campo
     @GetMapping("/filter")
-    public List<Usuario> filter(
-            @RequestParam(required = false) String nombres,
-            @RequestParam(required = false) String apellidos,
-            @RequestParam(required = false) RolUsuario rol,
-            @RequestParam(required = false) Status status) {
-        return usuarioService.filter(nombres, apellidos, rol, status);
+    public List<Usuario> filter(@RequestParam(required = false) Boolean filterStatus,
+                                @RequestParam(required = false) Boolean filterRol,
+                                @RequestParam(required = false) Boolean filterLugar) {
+        return usuarioService.filter(filterStatus, filterRol, filterLugar);
     }
 }
