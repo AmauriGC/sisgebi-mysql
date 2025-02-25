@@ -46,10 +46,10 @@ public class MarcaController {
         return marcaService.delete(id);
     }
 
-    // Filtro de marcas
+    // Filtrar marcas
     @GetMapping("/filter")
-    public List<Marca> filter(@RequestParam(required = false) Boolean filtrarPorMarca,
+    public List<Marca> filter(@RequestParam(required = false) Long idMarca,
                               @RequestParam(required = false) Status status) {
-        return marcaService.filter(filtrarPorMarca, status);
+        return marcaService.filter(idMarca, status);
     }
 }

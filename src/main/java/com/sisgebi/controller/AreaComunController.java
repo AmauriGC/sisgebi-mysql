@@ -58,8 +58,8 @@ public class AreaComunController {
 
     // Filtro para buscar áreas por nombre y estado
     @GetMapping("/filter")
-    public List<AreaComun> filter(@RequestParam(required = false) Boolean filtrarPorArea,
+    public List<AreaComun> filter(@RequestParam(required = false) Long areaId,
                                   @RequestParam(required = false) Status status) {
-        return areaComunService.filter(filtrarPorArea, status);
+        return areaComunService.filter(areaId, status);
     }
 }

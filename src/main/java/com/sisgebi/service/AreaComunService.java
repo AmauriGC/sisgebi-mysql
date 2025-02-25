@@ -48,14 +48,14 @@ public class AreaComunService {
         areaComunRepository.deleteById(id);
     }
 
-    // Filtro
-    public List<AreaComun> filter(Boolean filtrarPorArea, Status status) {
-        if (Boolean.TRUE.equals(filtrarPorArea) && status != null) {
-            return areaComunRepository.findByStatus(status); // Filtra solo por estado si se activó "Área"
-        } else if (Boolean.TRUE.equals(filtrarPorArea)) {
-            return areaComunRepository.findAll(); // Si solo activó "Área", trae todas
+    // Filtrar áreas comunes según ID y/o estado
+    public List<AreaComun> filter(Long areaId, Status status) {
+        if (areaId != null && status != null) {
+            return areaComunRepository.findByAreaIdAndStatus(areaId, status); // Filtra por área y estado
+        } else if (areaId != null) {
+            return areaComunRepository.findById(areaId).map(List::of).orElse(List.of()); // Filtra solo por área
         } else if (status != null) {
-            return areaComunRepository.findByStatus(status); // Si solo hay status, filtra por estado
+            return areaComunRepository.findByStatus(status); // Filtra solo por estado
         } else {
             return areaComunRepository.findAll(); // Si no hay filtros, devuelve todo
         }

@@ -1,6 +1,8 @@
 package com.sisgebi.controller;
 
 import com.sisgebi.entity.Usuario;
+import com.sisgebi.enums.RolUsuario;
+import com.sisgebi.enums.Status;
 import com.sisgebi.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -56,11 +58,11 @@ public class UsuarioController {
         return ResponseEntity.noContent().build();
     }
 
-    // Filtrar un campo
+    // Filtrar usuarios
     @GetMapping("/filter")
-    public List<Usuario> filter(@RequestParam(required = false) Boolean filterStatus,
-                                @RequestParam(required = false) Boolean filterRol,
-                                @RequestParam(required = false) Boolean filterLugar) {
-        return usuarioService.filter(filterStatus, filterRol, filterLugar);
+    public List<Usuario> filter(@RequestParam(required = false) Status status,
+                                @RequestParam(required = false) RolUsuario rol,
+                                @RequestParam(required = false) String lugar) {
+        return usuarioService.filter(status, rol, lugar);
     }
 }

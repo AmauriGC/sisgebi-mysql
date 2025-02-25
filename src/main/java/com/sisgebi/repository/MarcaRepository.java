@@ -9,9 +9,10 @@ import java.util.List;
 
 @Repository
 public interface MarcaRepository extends JpaRepository<Marca, Long> {
-    
-    // Filtro por nombre y estado
-    List<Marca> findByNombreMarcaAndStatus (String nombre, Status status);
-    List<Marca> findByNombreMarca (String nombreMarca);
-    List<Marca> findByStatus (Status status);
+
+    // Filtrar por ID de marca y estado
+    List<Marca> findByIdMarcaAndStatus(Long idMarca, Status status);
+
+    // Filtrar solo por estado (cuando el checkbox de status está marcado)
+    List<Marca> findByStatus(Status status);
 }

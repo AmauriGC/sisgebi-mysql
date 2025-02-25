@@ -48,14 +48,14 @@ public class TipoBienService {
         tipoBienRepository.deleteById(id);
     }
 
-    // Filtro
-    public List<TipoBien> filter(Boolean filtrarPorTipoBien, Status status) {
-        if (Boolean.TRUE.equals(filtrarPorTipoBien) && status != null) {
-            return tipoBienRepository.findByStatus(status); // Filtra solo por estado si se activó "TipoBien"
-        } else if (Boolean.TRUE.equals(filtrarPorTipoBien)) {
-            return tipoBienRepository.findAll(); // Si solo activó "TipoBien", trae todos
+    // Filtrar tipos de bien según ID y/o estado
+    public List<TipoBien> filter(Long tipoBienId, Status status) {
+        if (tipoBienId != null && status != null) {
+            return tipoBienRepository.findByTipoBienIdAndStatus(tipoBienId, status); // Filtra por tipo de bien y estado
+        } else if (tipoBienId != null) {
+            return tipoBienRepository.findById(tipoBienId).map(List::of).orElse(List.of()); // Filtra solo por tipo de bien
         } else if (status != null) {
-            return tipoBienRepository.findByStatus(status); // Si solo hay status, filtra por estado
+            return tipoBienRepository.findByStatus(status); // Filtra solo por estado
         } else {
             return tipoBienRepository.findAll(); // Si no hay filtros, devuelve todo
         }

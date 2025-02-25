@@ -56,10 +56,10 @@ public class TipoBienController {
         return ResponseEntity.noContent().build();
     }
 
-    // Filtro para buscar tipos de bien
+    // Filtrar tipos de bien
     @GetMapping("/filter")
-    public List<TipoBien> filter(@RequestParam(required = false) Boolean filtrarPorTipoBien,
+    public List<TipoBien> filter(@RequestParam(required = false) Long tipoBienId,
                                  @RequestParam(required = false) Status status) {
-        return tipoBienService.filter(filtrarPorTipoBien, status);
+        return tipoBienService.filter(tipoBienId, status);
     }
 }

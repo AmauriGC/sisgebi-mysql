@@ -11,11 +11,27 @@ import java.util.Optional;
 
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
+
     Optional<Usuario> findByCorreo(String correo);
 
+    // Filtrar por estado
     List<Usuario> findByStatus(Status status);
 
+    // Filtrar por rol
     List<Usuario> findByRol(RolUsuario rol);
 
-    List<Usuario> findByLugarContaining(String lugar);
+    // Filtrar por lugar (exacto)
+    List<Usuario> findByLugar(String lugar);
+
+    // Filtrar combinando rol y estado
+    List<Usuario> findByRolAndStatus(RolUsuario rol, Status status);
+
+    // Filtrar combinando rol y lugar
+    List<Usuario> findByRolAndLugar(RolUsuario rol, String lugar);
+
+    // Filtrar combinando estado y lugar
+    List<Usuario> findByStatusAndLugar(Status status, String lugar);
+
+    // Filtrar combinando los tres
+    List<Usuario> findByRolAndStatusAndLugar(RolUsuario rol, Status status, String lugar);
 }

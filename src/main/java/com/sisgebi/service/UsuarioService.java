@@ -49,24 +49,24 @@ public class UsuarioService {
         usuarioRepository.deleteById(id);
     }
 
-    // Filtros
-    public List<Usuario> filter(Boolean filterStatus, Boolean filterRol, Boolean filterLugar) {
-        // Si el filtro de status está habilitado
-        if (filterStatus != null && filterStatus) {
-            return usuarioRepository.findByStatus(Status.ACTIVO);  // O cualquier lógica que aplique para activo
+    // Filtrar usuarios según `Status`, `RolUsuario` y `Lugar`
+    public List<Usuario> filter(Status status, RolUsuario rol, String lugar) {
+        if (status != null && rol != null && lugar != null) {
+            return usuarioRepository.findByRolAndStatusAndLugar(rol, status, lugar);
+        } else if (status != null && rol != null) {
+            return usuarioRepository.findByRolAndStatus(rol, status);
+        } else if (status != null && lugar != null) {
+            return usuarioRepository.findByStatusAndLugar(status, lugar);
+        } else if (rol != null && lugar != null) {
+            return usuarioRepository.findByRolAndLugar(rol, lugar);
+        } else if (status != null) {
+            return usuarioRepository.findByStatus(status);
+        } else if (rol != null) {
+            return usuarioRepository.findByRol(rol);
+        } else if (lugar != null) {
+            return usuarioRepository.findByLugar(lugar);
+        } else {
+            return usuarioRepository.findAll();
         }
-
-        // Si el filtro de rol está habilitado
-        if (filterRol != null && filterRol) {
-            return usuarioRepository.findByRol(RolUsuario.ADMINISTRADOR);  // O cualquier lógica que aplique para rol
-        }
-
-        // Si el filtro de lugar está habilitado
-        if (filterLugar != null && filterLugar) {
-            return usuarioRepository.findByLugarContaining("Oficina");  // O cualquier lógica que aplique para lugar
-        }
-
-        // Si no se seleccionan filtros, se devuelven todos los usuarios
-        return usuarioRepository.findAll();
     }
 }
