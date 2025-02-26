@@ -11,8 +11,8 @@ import java.util.List;
 public interface UbicacionRepository extends JpaRepository<Ubicacion, Long> {
 
     // Filtrar por TipoUbicacion, AreaComun, Becario y Status
-    List<Ubicacion> findByTipoUbicacionAndAreaComunAndBecarioAndStatus(
-            TipoUbicacion tipoUbicacion, AreaComun areaComun, Usuario becario, Boolean status);
+    List<Ubicacion> findByTipoUbicacionAndAreaComunAndBecario(
+            TipoUbicacion tipoUbicacion, AreaComun areaComun, Usuario becario);
 
     // Filtrar por TipoUbicacion y AreaComun
     List<Ubicacion> findByTipoUbicacionAndAreaComun(TipoUbicacion tipoUbicacion, AreaComun areaComun);
@@ -20,8 +20,4 @@ public interface UbicacionRepository extends JpaRepository<Ubicacion, Long> {
     // Filtrar por Becario
     List<Ubicacion> findByBecario(Usuario becario);
 
-    // Filtrar por Status
-    List<Ubicacion> findByStatus(Boolean status);
-
-    // Otros métodos si es necesario...
 }

@@ -66,14 +66,14 @@ public class UbicacionService {
         ubicacionRepository.deleteById(id);
     }
 
-    // Filtrar ubicaciones por TipoUbicacion, AreaComun, Becario y Status
-    public List<Ubicacion> filter(TipoUbicacion tipoUbicacion, Long areaId, Long becarioId, Boolean status) {
+    // Filtrar ubicaciones por TipoUbicacion, AreaComun, Becario
+    public List<Ubicacion> filter(TipoUbicacion tipoUbicacion, Long areaId, Long becarioId) {
         if (tipoUbicacion != null && areaId != null && becarioId != null) {
             Optional<AreaComun> area = areaComunRepository.findById(areaId);
             Optional<Usuario> becario = usuarioRepository.findById(becarioId);
             if (area.isPresent() && becario.isPresent()) {
-                return ubicacionRepository.findByTipoUbicacionAndAreaComunAndBecarioAndStatus(
-                        tipoUbicacion, area.get(), becario.get(), status != null && status);
+                return ubicacionRepository.findByTipoUbicacionAndAreaComunAndBecario(
+                        tipoUbicacion, area.get(), becario.get());
             }
         } else if (tipoUbicacion != null && areaId != null) {
             Optional<AreaComun> area = areaComunRepository.findById(areaId);
@@ -85,8 +85,6 @@ public class UbicacionService {
             if (becario.isPresent()) {
                 return ubicacionRepository.findByBecario(becario.get());
             }
-        } else if (status != null) {
-            return ubicacionRepository.findByStatus(status);
         }
         return ubicacionRepository.findAll(); // Si no hay filtros, trae todas las ubicaciones
     }

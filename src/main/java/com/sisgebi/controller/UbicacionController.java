@@ -51,8 +51,7 @@ public class UbicacionController {
     public List<Ubicacion> filter(
             @RequestParam(required = false) TipoUbicacion tipoUbicacion,
             @RequestParam(required = false) Long areaId,
-            @RequestParam(required = false) Long becarioId,
-            @RequestParam(required = false) Boolean status) { // Usamos Boolean para el checkbox (Status)
-        return ubicacionService.filter(tipoUbicacion, areaId, becarioId, status);
+            @RequestParam(required = false) Long becarioId) {
+        return ubicacionService.filter(tipoUbicacion, areaId, becarioId);
     }
 }
