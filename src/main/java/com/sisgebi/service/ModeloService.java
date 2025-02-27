@@ -43,7 +43,7 @@ public class ModeloService {
     // Actualizar modelo
     public Modelo update(Long id, Modelo modelo) {
         if (modeloRepository.existsById(id)) {
-            modelo.setidModelo(id);
+            modelo.setModeloId(id);
             return modeloRepository.save(modelo);
         }
         return null;

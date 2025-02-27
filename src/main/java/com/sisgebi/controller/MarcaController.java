@@ -48,8 +48,8 @@ public class MarcaController {
 
     // Filtrar marcas
     @GetMapping("/filter")
-    public List<Marca> filter(@RequestParam(required = false) Long idMarca,
+    public List<Marca> filter(@RequestParam(required = false) Long marcaId,
                               @RequestParam(required = false) Status status) {
-        return marcaService.filter(idMarca, status);
+        return marcaService.filter(marcaId, status);
     }
 }

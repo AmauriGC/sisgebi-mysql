@@ -1,78 +1,80 @@
-//package com.sisgebi.service;
-//
-//import com.sisgebi.entity.Bien;
-//import com.sisgebi.enums.EstadoBien;
-//import com.sisgebi.repository.BienRepository;
-//import com.sisgebi.specification.BienSpecification;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.data.jpa.domain.Specification;
-//import org.springframework.stereotype.Service;
-//
-//import java.util.List;
-//import java.util.Optional;
-//
-//@Service
-//public class BienService {
-//
-//    @Autowired
-//    private BienRepository bienRepository;
-//
-//
-//    public BienService(BienRepository bienRepository) {
-//        this.bienRepository = bienRepository;
-//    }
-//
-//    // Obtener todos los bienes
-//    public List<Bien> getAll() {
-//        return bienRepository.findAll();
-//    }
-//
-//    // Obtener un bien por ID
-//    public Optional<Bien> getById(Long bienId) {
-//        return bienRepository.findById(bienId);
-//    }
-//
-//    // Crear un nuevo bien
-//    public Bien create(Bien bien) {
-//        return bienRepository.save(bien);
-//    }
-//
-//    // Actualizar un bien existente
-//    public Bien update(Long bienId, Bien bien) {
-//        if (bienRepository.existsById(bienId)) {
-//            bien.setBienId(bienId);
-//            return bienRepository.save(bien);
-//        }
-//        return null; // O lanzar excepción
-//    }
-//
-//    // Eliminar un bien por ID
-//    public boolean delete(Long bienId) {
-//        if (bienRepository.existsById(bienId)) {
-//            bienRepository.deleteById(bienId);
-//            return true;
-//        }
-//        return false; // O lanzar excepción
-//    }
-//
-//    // Filtro combinando checkboxes y React Select
-//    public List<Bien> filter(Long tipoBienId, Long marcaId, Long modeloId, EstadoBien estadoBien) {
-//        Specification<Bien> spec = Specification.where(null);
-//
-//        if (tipoBienId != null) {
-//            spec = spec.and(BienSpecification.filtroPorTipoBien(tipoBienId));
-//        }
-//        if (marcaId != null) {
-//            spec = spec.and(BienSpecification.filtroPorMarca(marcaId));
-//        }
-//        if (modeloId != null) {
-//            spec = spec.and(BienSpecification.filtroPorModelo(modeloId));
-//        }
-//        if (estadoBien != null) {
-//            spec = spec.and(BienSpecification.filtroPorEstado(estadoBien));
-//        }
-//
-//        return bienRepository.findAll(spec);
-//    }
-//
-//}
+package com.sisgebi.service;
+
+import com.sisgebi.entity.Bien;
+import com.sisgebi.enums.Status;
+import com.sisgebi.enums.TipoUbicacion;
+import com.sisgebi.repository.BienRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class BienService {
+
+    @Autowired
+    private BienRepository bienRepository;
+
+    public BienService(BienRepository bienRepository) {
+        this.bienRepository = bienRepository;
+    }
+
+    // Obtener todos los bienes
+    public List<Bien> getAllBienes() {
+        return bienRepository.findAll();
+    }
+
+    // Obtener bien por id
+    public Optional<Bien> getBienById(Long id) {
+        return bienRepository.findById(id);
+    }
+
+    // Crear un nuevo bien
+    public Bien createBien(Bien bien) {
+        return bienRepository.save(bien);
+    }
+
+    // Actualizar bien
+    public Bien updateBien(Long id, Bien bien) {
+        if (bienRepository.existsById(id)) {
+            bien.setIdBien(id);
+            return bienRepository.save(bien);
+        }
+        return null; // O puedes lanzar una excepción si no existe el bien
+    }
+
+    // Eliminar bien
+    public void deleteBien(Long id) {
+        bienRepository.deleteById(id);
+    }
+
+    // Filtrar bienes según varios atributos
+    public List<Bien> filter(String codigo, String numeroSerie, Long tipoBienId, Long marcaId, Long modeloId,
+                             TipoUbicacion tipoUbicacion, Long areaComunId, Long becarioId, Long responsableId,
+                             Status status) {
+        if (codigo != null) {
+            return bienRepository.findByCodigo(codigo);
+        } else if (numeroSerie != null) {
+            return bienRepository.findByNumeroSerie(numeroSerie);
+        } else if (tipoBienId != null) {
+            return bienRepository.findByTipoBien_TipoBienId(tipoBienId);
+        } else if (marcaId != null) {
+            return bienRepository.findByMarca_MarcaId(marcaId);
+        } else if (modeloId != null) {
+            return bienRepository.findByModelo_ModeloId(modeloId);
+        } else if (tipoUbicacion != null) {
+            return bienRepository.findByTipoUbicacion(tipoUbicacion);
+        } else if (areaComunId != null) {
+            return bienRepository.findByAreaComun_AreaId(areaComunId);
+        } else if (becarioId != null) {
+            return bienRepository.findByBecario_Id(becarioId);
+        } else if (responsableId != null) {
+            return bienRepository.findByResponsable_Id(responsableId);
+        } else if (status != null) {
+            return bienRepository.findByStatus(status);
+        } else {
+            return bienRepository.findAll(); // Si no hay filtros, devuelve todos los bienes
+        }
+    }
+}

@@ -21,8 +21,8 @@ public class MarcaService {
     }
 
     // Obtener una marca por ID
-    public Optional<Marca> getById(Long idMarca) {
-        return marcaRepository.findById(idMarca);
+    public Optional<Marca> getById(Long marcaId) {
+        return marcaRepository.findById(marcaId);
     }
 
     // Crear una nueva marca
@@ -31,29 +31,29 @@ public class MarcaService {
     }
 
     // Actualizar una marca existente
-    public Marca update(Long idMarca, Marca marca) {
-        if (marcaRepository.existsById(idMarca)) {
-            marca.setidMarca(idMarca);
+    public Marca update(Long marcaId, Marca marca) {
+        if (marcaRepository.existsById(marcaId)) {
+            marca.setMarcaId(marcaId);
             return marcaRepository.save(marca);
         }
         return null; // O lanzar excepción
     }
 
     // Eliminar una marca por ID
-    public boolean delete(Long idMarca) {
-        if (marcaRepository.existsById(idMarca)) {
-            marcaRepository.deleteById(idMarca);
+    public boolean delete(Long marcaId) {
+        if (marcaRepository.existsById(marcaId)) {
+            marcaRepository.deleteById(marcaId);
             return true;
         }
         return false; // O lanzar excepción
     }
 
     // Filtrar marcas según ID y/o estado
-    public List<Marca> filter(Long idMarca, Status status) {
-        if (idMarca != null && status != null) {
-            return marcaRepository.findByIdMarcaAndStatus(idMarca, status); // Filtra por marca y estado
-        } else if (idMarca != null) {
-            return marcaRepository.findById(idMarca).map(List::of).orElse(List.of()); // Filtra solo por marca
+    public List<Marca> filter(Long marcaId, Status status) {
+        if (marcaId != null && status != null) {
+            return marcaRepository.findBymarcaIdAndStatus(marcaId, status); // Filtra por marca y estado
+        } else if (marcaId != null) {
+            return marcaRepository.findById(marcaId).map(List::of).orElse(List.of()); // Filtra solo por marca
         } else if (status != null) {
             return marcaRepository.findByStatus(status); // Filtra solo por estado
         } else {

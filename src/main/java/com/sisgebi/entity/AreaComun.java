@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class AreaComun {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long areaId;
 
     @NotBlank(message = "El nombre del área es obligatorio")
@@ -39,6 +39,7 @@ public class AreaComun {
     }
 
     // Getters y setters
+
     public Long getAreaId() {
         return areaId;
     }

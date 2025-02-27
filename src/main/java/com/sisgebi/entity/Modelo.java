@@ -13,14 +13,15 @@ public class Modelo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idModelo;
+    private Long modeloId;
 
     @NotBlank(message = "El nombre del modelo es obligatorio")
     @Column(name = "nombre_modelo", nullable = false, unique = true)
     private String nombreModelo;
 
-    @Column(nullable = true)
-    private String foto; // Almacenar foto (puede ser una URL o base64 dependiendo de cómo lo manejes)
+    @Lob
+    @Column(columnDefinition = "LONGBLOB")
+    private byte[] foto;
 
     @NotNull(message = "El estado del modelo es obligatorio")
     @Enumerated(EnumType.STRING)
@@ -28,7 +29,7 @@ public class Modelo {
     private Status status;
 
     @ManyToOne
-    @JoinColumn(name = "idMarca")
+    @JoinColumn(name = "marcaId")
     private Marca marca;
 
     @Column(updatable = false)
@@ -46,12 +47,13 @@ public class Modelo {
     }
 
     // Getters y setters
-    public Long getidModelo() {
-        return idModelo;
+
+    public Long getModeloId() {
+        return modeloId;
     }
 
-    public void setidModelo(Long idModelo) {
-        this.idModelo = idModelo;
+    public void setModeloId(Long modeloId) {
+        this.modeloId = modeloId;
     }
 
     public String getNombreModelo() {
@@ -62,11 +64,11 @@ public class Modelo {
         this.nombreModelo = nombreModelo;
     }
 
-    public String getFoto() {
+    public byte[] getFoto() {
         return foto;
     }
 
-    public void setFoto(String foto) {
+    public void setFoto(byte[] foto) {
         this.foto = foto;
     }
 

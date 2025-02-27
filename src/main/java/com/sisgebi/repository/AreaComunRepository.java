@@ -11,7 +11,7 @@ import java.util.List;
 public interface AreaComunRepository extends JpaRepository<AreaComun, Long> {
 
     // Filtrar por ID de área y estado
-    List<AreaComun> findByAreaIdAndStatus(Long areaId, Status status);
+    List<AreaComun> findByareaIdAndStatus(Long areaId, Status status);
 
     // Filtrar solo por estado
     List<AreaComun> findByStatus(Status status);

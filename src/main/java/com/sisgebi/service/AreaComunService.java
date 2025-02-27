@@ -51,7 +51,7 @@ public class AreaComunService {
     // Filtrar áreas comunes según ID y/o estado
     public List<AreaComun> filter(Long areaId, Status status) {
         if (areaId != null && status != null) {
-            return areaComunRepository.findByAreaIdAndStatus(areaId, status); // Filtra por área y estado
+            return areaComunRepository.findByareaIdAndStatus(areaId, status); // Filtra por área y estado
         } else if (areaId != null) {
             return areaComunRepository.findById(areaId).map(List::of).orElse(List.of()); // Filtra solo por área
         } else if (status != null) {

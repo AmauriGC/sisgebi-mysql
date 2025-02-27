@@ -3,6 +3,7 @@ package com.sisgebi.controller;
 import com.sisgebi.entity.Usuario;
 import com.sisgebi.enums.RolUsuario;
 import com.sisgebi.enums.Status;
+import com.sisgebi.repository.UsuarioRepository;
 import com.sisgebi.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,9 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioService usuarioService;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     // Filtros de usuarios
     public UsuarioController(UsuarioService usuarioService) {
@@ -65,4 +69,10 @@ public class UsuarioController {
                                 @RequestParam(required = false) String lugar) {
         return usuarioService.filter(status, rol, lugar);
     }
+
+    @GetMapping("/lugares")
+    public List<String> getAllLugares() {
+        return usuarioRepository.findDistinctLugares();
+    }
+
 }
