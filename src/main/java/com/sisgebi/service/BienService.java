@@ -51,8 +51,7 @@ public class BienService {
 
     // Filtrar bienes según varios atributos
     public List<Bien> filter(String codigo, String numeroSerie, Long tipoBienId, Long marcaId, Long modeloId,
-                             TipoUbicacion tipoUbicacion, Long areaComunId, Long becarioId, Long responsableId,
-                             Status status) {
+                             TipoUbicacion tipoUbicacion, Long areaComunId, Status status) {
         if (codigo != null) {
             return bienRepository.findByCodigo(codigo);
         } else if (numeroSerie != null) {
@@ -67,10 +66,6 @@ public class BienService {
             return bienRepository.findByTipoUbicacion(tipoUbicacion);
         } else if (areaComunId != null) {
             return bienRepository.findByAreaComun_AreaId(areaComunId);
-        } else if (becarioId != null) {
-            return bienRepository.findByBecario_Id(becarioId);
-        } else if (responsableId != null) {
-            return bienRepository.findByResponsable_Id(responsableId);
         } else if (status != null) {
             return bienRepository.findByStatus(status);
         } else {

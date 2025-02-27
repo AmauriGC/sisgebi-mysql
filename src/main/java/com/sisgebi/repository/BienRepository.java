@@ -33,12 +33,6 @@ public interface BienRepository extends JpaRepository<Bien, Long> {
     // Filtrar por área común (id del área común)
     List<Bien> findByAreaComun_AreaId(Long areaComunId);
 
-    // Filtrar por becario (id del becario)
-    List<Bien> findByBecario_Id(Long becarioId);
-
-    // Filtrar por responsable (id del responsable)
-    List<Bien> findByResponsable_Id(Long responsableId);
-
     // Filtrar por estado
     List<Bien> findByStatus(Status status);
 
@@ -48,13 +42,10 @@ public interface BienRepository extends JpaRepository<Bien, Long> {
     // Filtrar combinando tipo de bien y marca
     List<Bien> findByTipoBien_TipoBienIdAndMarca_MarcaId(Long tipoBienId, Long marcaId);
 
-    // Filtrar combinando responsable y estado
-    List<Bien> findByResponsable_IdAndStatus(Long responsableId, Status status);
-
     // Filtro combinado por todos los atributos posibles
-    List<Bien> findByCodigoAndNumeroSerieAndTipoBien_TipoBienIdAndMarca_MarcaIdAndModelo_ModeloIdAndTipoUbicacionAndAreaComun_AreaIdAndBecario_IdAndResponsable_IdAndStatus(
+    List<Bien> findByCodigoAndNumeroSerieAndTipoBien_TipoBienIdAndMarca_MarcaIdAndModelo_ModeloIdAndTipoUbicacionAndAreaComun_AreaIdAndStatus(
             String codigo, String numeroSerie, Long tipoBienId, Long marcaId, Long modeloId, TipoUbicacion tipoUbicacion,
-            Long areaComunId, Long becarioId, Long responsableId, Status status
+            Long areaComunId, Status status
     );
 
     @Query("SELECT DISTINCT b.tipoUbicacion FROM Bien b")

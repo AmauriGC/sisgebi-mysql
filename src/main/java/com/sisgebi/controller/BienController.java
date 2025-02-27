@@ -62,10 +62,7 @@ public class BienController {
                              @RequestParam(required = false) Long modeloId,
                              @RequestParam(required = false) TipoUbicacion tipoUbicacion,
                              @RequestParam(required = false) Long areaComunId,
-                             @RequestParam(required = false) Long becarioId,
-                             @RequestParam(required = false) Long responsableId,
                              @RequestParam(required = false) Status status) {
-        return bienService.filter(codigo, numeroSerie, tipoBienId, marcaId, modeloId, tipoUbicacion,
-                areaComunId, becarioId, responsableId, status);
+        return bienService.filter(codigo, numeroSerie, tipoBienId, marcaId, modeloId, tipoUbicacion, areaComunId, status);
     }
 }

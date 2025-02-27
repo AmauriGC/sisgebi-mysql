@@ -45,14 +45,6 @@ public class Bien {
     @JoinColumn(name = "id_area_comun", nullable = true)
     private AreaComun areaComun;
 
-    @ManyToOne
-    @JoinColumn(name = "id_becario", nullable = true)
-    private Usuario becario;
-
-    @ManyToOne
-    @JoinColumn(name = "id_responsable", nullable = false)
-    private Usuario responsable;
-
     @NotNull(message = "El estado del bien es obligatorio")
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -136,22 +128,6 @@ public class Bien {
 
     public void setAreaComun(AreaComun areaComun) {
         this.areaComun = areaComun;
-    }
-
-    public Usuario getBecario() {
-        return becario;
-    }
-
-    public void setBecario(Usuario becario) {
-        this.becario = becario;
-    }
-
-    public Usuario getResponsable() {
-        return responsable;
-    }
-
-    public void setResponsable(Usuario responsable) {
-        this.responsable = responsable;
     }
 
     public Status getStatus() {
