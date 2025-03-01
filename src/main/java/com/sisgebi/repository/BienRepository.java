@@ -1,6 +1,7 @@
 package com.sisgebi.repository;
 
 import com.sisgebi.entity.Bien;
+import com.sisgebi.enums.Disponibilidad;
 import com.sisgebi.enums.Status;
 import com.sisgebi.enums.TipoUbicacion;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -35,6 +36,9 @@ public interface BienRepository extends JpaRepository<Bien, Long> {
 
     // Filtrar por estado
     List<Bien> findByStatus(Status status);
+
+    // Filtrar por disponibilidad
+    List<Bien> findByDisponibilidad(Disponibilidad disponibilidad);
 
     // Filtrar combinando código y número de serie
     List<Bien> findByCodigoAndNumeroSerie(String codigo, String numeroSerie);

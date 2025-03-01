@@ -14,7 +14,6 @@ public class Asignaciones {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long asignacionesId;
 
-
     // puedo poner en otra tabla para asignaciones
     @ManyToOne
     @JoinColumn(name = "id_becario", nullable = true)
@@ -24,7 +23,6 @@ public class Asignaciones {
     @JoinColumn(name = "id_responsable", nullable = false)
     private Usuario responsable;
     // para revisar como se maneja
-
 
     @NotNull(message = "El estado del bien es obligatorio")
     @Enumerated(EnumType.STRING)

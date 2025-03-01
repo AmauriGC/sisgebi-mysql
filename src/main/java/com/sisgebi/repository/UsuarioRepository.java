@@ -38,6 +38,4 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     @Query("SELECT DISTINCT u.lugar FROM Usuario u")
     List<String> findDistinctLugares();
-
-    Optional<Usuario> findByid(Long id);
 }

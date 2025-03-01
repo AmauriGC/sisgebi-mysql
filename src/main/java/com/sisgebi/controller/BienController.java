@@ -1,6 +1,7 @@
 package com.sisgebi.controller;
 
 import com.sisgebi.entity.Bien;
+import com.sisgebi.enums.Disponibilidad;
 import com.sisgebi.enums.Status;
 import com.sisgebi.enums.TipoUbicacion;
 import com.sisgebi.service.BienService;
@@ -62,7 +63,8 @@ public class BienController {
                              @RequestParam(required = false) Long modeloId,
                              @RequestParam(required = false) TipoUbicacion tipoUbicacion,
                              @RequestParam(required = false) Long areaComunId,
-                             @RequestParam(required = false) Status status) {
-        return bienService.filter(codigo, numeroSerie, tipoBienId, marcaId, modeloId, tipoUbicacion, areaComunId, status);
+                             @RequestParam(required = false) Status status,
+                             @RequestParam(required = false) Disponibilidad disponibilidad) {
+        return bienService.filter(codigo, numeroSerie, tipoBienId, marcaId, modeloId, tipoUbicacion, areaComunId, status, disponibilidad);
     }
 }

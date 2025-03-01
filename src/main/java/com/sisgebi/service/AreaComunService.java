@@ -1,8 +1,10 @@
 package com.sisgebi.service;
 
 import com.sisgebi.entity.AreaComun;
+import com.sisgebi.entity.Usuario;
 import com.sisgebi.enums.Status;
 import com.sisgebi.repository.AreaComunRepository;
+import com.sisgebi.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,8 @@ public class AreaComunService {
 
     @Autowired
     private AreaComunRepository areaComunRepository;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     public AreaComunService(AreaComunRepository areaComunRepository) {
         this.areaComunRepository = areaComunRepository;
@@ -49,11 +53,14 @@ public class AreaComunService {
     }
 
     // Filtrar áreas comunes según ID y/o estado
-    public List<AreaComun> filter(Long areaId, Status status) {
+    public List<AreaComun> filter(Long areaId, Status status, Long responsableId) {
         if (areaId != null && status != null) {
             return areaComunRepository.findByareaIdAndStatus(areaId, status); // Filtra por área y estado
         } else if (areaId != null) {
             return areaComunRepository.findById(areaId).map(List::of).orElse(List.of()); // Filtra solo por área
+        } else if (responsableId != null) {
+            Optional<Usuario> responsable = usuarioRepository.findById(responsableId);
+            return responsable.map(areaComunRepository::findByResponsable).orElseGet(List::of);
         } else if (status != null) {
             return areaComunRepository.findByStatus(status); // Filtra solo por estado
         } else {

@@ -1,6 +1,7 @@
 package com.sisgebi.service;
 
 import com.sisgebi.entity.Bien;
+import com.sisgebi.enums.Disponibilidad;
 import com.sisgebi.enums.Status;
 import com.sisgebi.enums.TipoUbicacion;
 import com.sisgebi.repository.BienRepository;
@@ -51,7 +52,7 @@ public class BienService {
 
     // Filtrar bienes según varios atributos
     public List<Bien> filter(String codigo, String numeroSerie, Long tipoBienId, Long marcaId, Long modeloId,
-                             TipoUbicacion tipoUbicacion, Long areaComunId, Status status) {
+                             TipoUbicacion tipoUbicacion, Long areaComunId, Status status, Disponibilidad disponibilidad) {
         if (codigo != null) {
             return bienRepository.findByCodigo(codigo);
         } else if (numeroSerie != null) {
@@ -68,6 +69,8 @@ public class BienService {
             return bienRepository.findByAreaComun_AreaId(areaComunId);
         } else if (status != null) {
             return bienRepository.findByStatus(status);
+        } else if (disponibilidad != null) {
+            return bienRepository.findByDisponibilidad(disponibilidad);
         } else {
             return bienRepository.findAll(); // Si no hay filtros, devuelve todos los bienes
         }

@@ -19,6 +19,10 @@ public class AreaComun {
     @Column(name = "nombre_area", nullable = false, unique = true)
     private String nombreArea;
 
+    @ManyToOne
+    @JoinColumn(name = "responsable_id", nullable = false)
+    private Usuario responsable;
+
     @NotNull(message = "El estado del área es obligatorio")
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -78,5 +82,13 @@ public class AreaComun {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public Usuario getResponsable() {
+        return responsable;
+    }
+
+    public void setResponsable(Usuario responsable) {
+        this.responsable = responsable;
     }
 }

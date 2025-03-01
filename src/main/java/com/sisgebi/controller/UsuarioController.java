@@ -75,4 +75,9 @@ public class UsuarioController {
         return usuarioRepository.findDistinctLugares();
     }
 
+    @GetMapping("/responsables")
+    public List<Usuario> getResponsables() {
+        return usuarioService.getResponsables();
+    }
+
 }

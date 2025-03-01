@@ -1,6 +1,6 @@
 package com.sisgebi.entity;
 
-import com.sisgebi.enums.EstadoBien;
+import com.sisgebi.enums.Disponibilidad;
 import com.sisgebi.enums.Status;
 import com.sisgebi.enums.TipoUbicacion;
 import jakarta.persistence.*;
@@ -49,6 +49,11 @@ public class Bien {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Status status;
+
+    @NotNull(message = "La disponibilidad del bien es obligatoria")
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Disponibilidad disponibilidad;
 
     @Column(updatable = false)
     private LocalDateTime createdAt;

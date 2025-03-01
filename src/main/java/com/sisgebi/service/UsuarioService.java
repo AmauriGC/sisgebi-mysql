@@ -49,6 +49,10 @@ public class UsuarioService {
         usuarioRepository.deleteById(id);
     }
 
+    public List<Usuario> getResponsables() {
+        return usuarioRepository.findByRol(RolUsuario.RESPONSABLE);
+    }
+
     // Filtrar usuarios según `Status`, `RolUsuario` y `Lugar`
     public List<Usuario> filter(Status status, RolUsuario rol, String lugar) {
         if (status != null && rol != null && lugar != null) {
