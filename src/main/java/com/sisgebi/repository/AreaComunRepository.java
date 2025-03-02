@@ -21,4 +21,8 @@ public interface AreaComunRepository extends JpaRepository<AreaComun, Long> {
 
     // Filtrar por usuario
     List<AreaComun> findByResponsable(Usuario responsable);
+
+
+    // Filtrar por usuario
+    List<AreaComun> findByResponsableIdAndStatus(Long responsableId, Status status);
 }

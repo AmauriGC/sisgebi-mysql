@@ -53,6 +53,10 @@ public class UsuarioService {
         return usuarioRepository.findByRol(RolUsuario.RESPONSABLE);
     }
 
+    public List<Usuario> getBecarios() {
+        return usuarioRepository.findByRol(RolUsuario.BECARIO);
+    }
+
     // Filtrar usuarios según `Status`, `RolUsuario` y `Lugar`
     public List<Usuario> filter(Status status, RolUsuario rol, String lugar) {
         if (status != null && rol != null && lugar != null) {

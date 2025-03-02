@@ -16,6 +16,8 @@ public class BienService {
 
     @Autowired
     private BienRepository bienRepository;
+    @Autowired
+    private AreaComunService areaComunService;
 
     public BienService(BienRepository bienRepository) {
         this.bienRepository = bienRepository;
@@ -53,7 +55,14 @@ public class BienService {
     // Filtrar bienes según varios atributos
     public List<Bien> filter(String codigo, String numeroSerie, Long tipoBienId, Long marcaId, Long modeloId,
                              TipoUbicacion tipoUbicacion, Long areaComunId, Status status, Disponibilidad disponibilidad) {
-        if (codigo != null) {
+
+        if (areaComunId != null && disponibilidad != null && status != null) {
+            return bienRepository.findByAreaComun_AreaIdAndDisponibilidadAndStatus(areaComunId, disponibilidad, status);
+        } else if (status != null && disponibilidad != null) {
+            return bienRepository.findByStatusAndDisponibilidad(status, disponibilidad);
+        } else if (areaComunId != null && disponibilidad != null) {
+            return bienRepository.findByAreaComun_AreaIdAndDisponibilidad(areaComunId, disponibilidad);
+        } else if (codigo != null) {
             return bienRepository.findByCodigo(codigo);
         } else if (numeroSerie != null) {
             return bienRepository.findByNumeroSerie(numeroSerie);

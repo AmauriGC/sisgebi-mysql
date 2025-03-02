@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/asignaciones")
@@ -18,45 +17,43 @@ public class AsignacionesController {
     @Autowired
     private AsignacionesService asignacionesService;
 
-    // Obtener todos las asignaciones
+    // Obtener todas las asignaciones (excluyendo ADMINISTRADORES)
     @GetMapping
     public List<Asignaciones> getAllAsignaciones() {
         return asignacionesService.getAllAsignaciones();
     }
 
-    // Obtener una asignacion por id
+    // Obtener una asignación por ID
     @GetMapping("/{id}")
-    public ResponseEntity<Asignaciones> getAsignacionesById(@PathVariable Long id) {
-        Optional<Asignaciones> asignacion = asignacionesService.getAsignacionesById(id);
-        return asignacion.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<Asignaciones> getAsignacionById(@PathVariable Long id) {
+        Asignaciones asignacion = asignacionesService.getAsignacionById(id);
+        return asignacion != null ? ResponseEntity.ok(asignacion) : ResponseEntity.notFound().build();
     }
 
-    // Crear una nueva asignacion
+    // Crear una nueva asignación (solo para RESPONSABLES y BECARIOS)
     @PostMapping
-    public ResponseEntity<Asignaciones> createAsignaciones(@RequestBody Asignaciones asignacion) {
-        Asignaciones createdAsignaciones = asignacionesService.createAsignaciones(asignacion);
-        return new ResponseEntity<>(createdAsignaciones, HttpStatus.CREATED);
+    public ResponseEntity<Asignaciones> createAsignacion(@RequestBody Asignaciones asignacion) {
+        Asignaciones createdAsignacion = asignacionesService.createAsignacion(asignacion);
+        return new ResponseEntity<>(createdAsignacion, HttpStatus.CREATED);
     }
 
-    // Actualizar una asignacion
+    // Actualizar una asignación (solo para RESPONSABLES y BECARIOS)
     @PutMapping("/{id}")
-    public ResponseEntity<Asignaciones> updateAsignaciones(@PathVariable Long id, @RequestBody Asignaciones asignacion) {
-        Asignaciones updatedAsignaciones = asignacionesService.updateAsignaciones(id, asignacion);
-        return updatedAsignaciones != null ? ResponseEntity.ok(updatedAsignaciones) : ResponseEntity.notFound().build();
+    public ResponseEntity<Asignaciones> updateAsignacion(@PathVariable Long id, @RequestBody Asignaciones asignacion) {
+        Asignaciones updatedAsignacion = asignacionesService.updateAsignacion(id, asignacion);
+        return updatedAsignacion != null ? ResponseEntity.ok(updatedAsignacion) : ResponseEntity.notFound().build();
     }
 
-    // Eliminar una asignacion
+    // Eliminar una asignación
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAsignaciones(@PathVariable Long id) {
-        asignacionesService.deleteAsignaciones(id);
+    public ResponseEntity<Void> deleteAsignacion(@PathVariable Long id) {
+        asignacionesService.deleteAsignacion(id);
         return ResponseEntity.noContent().build();
     }
 
-    // Filtrar asignaciones
+    // Filtrar usuarios
     @GetMapping("/filter")
-    public List<Asignaciones> filter(@RequestParam(required = false) Long becarioId,
-                                     @RequestParam(required = false) Long responsableId,
-                                     @RequestParam(required = false) Status status) {
-        return asignacionesService.filter(becarioId, responsableId, status);
+    public List<Asignaciones> filter(@RequestParam(required = false) Status status) {
+        return asignacionesService.filter(status);
     }
 }

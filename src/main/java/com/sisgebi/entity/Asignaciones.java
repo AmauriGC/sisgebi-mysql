@@ -16,18 +16,17 @@ public class Asignaciones {
 
     // puedo poner en otra tabla para asignaciones
     @ManyToOne
-    @JoinColumn(name = "id_becario", nullable = true)
-    private Usuario becario;
-
-    @ManyToOne
-    @JoinColumn(name = "id_responsable", nullable = false)
-    private Usuario responsable;
-    // para revisar como se maneja
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario usuario;
 
     @NotNull(message = "El estado del bien es obligatorio")
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Status status;
+
+    @ManyToOne
+    @JoinColumn(name = "bien_id", nullable = false)
+    private Bien bien;
 
     @Column(updatable = false)
     private LocalDateTime createdAt;
@@ -51,20 +50,20 @@ public class Asignaciones {
         this.asignacionesId = asignacionesId;
     }
 
-    public Usuario getBecario() {
-        return becario;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setBecario(Usuario becario) {
-        this.becario = becario;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
-    public Usuario getResponsable() {
-        return responsable;
+    public Status getStatus() {
+        return status;
     }
 
-    public void setResponsable(Usuario responsable) {
-        this.responsable = responsable;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -83,11 +82,11 @@ public class Asignaciones {
         this.updatedAt = updatedAt;
     }
 
-    public Status getStatus() {
-        return status;
+    public Bien getBien() {
+        return bien;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setBien(Bien bien) {
+        this.bien = bien;
     }
 }

@@ -19,6 +19,13 @@ public interface BienRepository extends JpaRepository<Bien, Long> {
     // Filtrar por número de serie
     List<Bien> findByNumeroSerie(String numeroSerie);
 
+    // Filtrar por tipo de ubicación (enum)
+    List<Bien> findByTipoUbicacion(TipoUbicacion tipoUbicacion);
+
+
+    // Filtrar por área común (id del área común)
+    List<Bien> findByAreaComun_AreaId(Long areaComunId);
+
     // Filtrar por tipo de bien (id del tipo de bien)
     List<Bien> findByTipoBien_TipoBienId(Long tipoBienId);
 
@@ -28,11 +35,6 @@ public interface BienRepository extends JpaRepository<Bien, Long> {
     // Filtrar por modelo (id del modelo)
     List<Bien> findByModelo_ModeloId(Long modeloId);
 
-    // Filtrar por tipo de ubicación (enum)
-    List<Bien> findByTipoUbicacion(TipoUbicacion tipoUbicacion);
-
-    // Filtrar por área común (id del área común)
-    List<Bien> findByAreaComun_AreaId(Long areaComunId);
 
     // Filtrar por estado
     List<Bien> findByStatus(Status status);
@@ -40,17 +42,15 @@ public interface BienRepository extends JpaRepository<Bien, Long> {
     // Filtrar por disponibilidad
     List<Bien> findByDisponibilidad(Disponibilidad disponibilidad);
 
-    // Filtrar combinando código y número de serie
-    List<Bien> findByCodigoAndNumeroSerie(String codigo, String numeroSerie);
+    // Filtrar por estado y disponibilidad
+    List<Bien> findByStatusAndDisponibilidad(Status status, Disponibilidad disponibilidad);
 
-    // Filtrar combinando tipo de bien y marca
-    List<Bien> findByTipoBien_TipoBienIdAndMarca_MarcaId(Long tipoBienId, Long marcaId);
 
-    // Filtro combinado por todos los atributos posibles
-    List<Bien> findByCodigoAndNumeroSerieAndTipoBien_TipoBienIdAndMarca_MarcaIdAndModelo_ModeloIdAndTipoUbicacionAndAreaComun_AreaIdAndStatus(
-            String codigo, String numeroSerie, Long tipoBienId, Long marcaId, Long modeloId, TipoUbicacion tipoUbicacion,
-            Long areaComunId, Status status
-    );
+    // Filtrar por área común y disponibilidad
+    List<Bien> findByAreaComun_AreaIdAndDisponibilidad(Long areaComunId, Disponibilidad disponibilidad);
+
+    // Filtrar por área común y disponibilidad y estatus
+    List<Bien> findByAreaComun_AreaIdAndDisponibilidadAndStatus(Long areaComunId, Disponibilidad disponibilidad, Status status);
 
     @Query("SELECT DISTINCT b.tipoUbicacion FROM Bien b")
     List<TipoUbicacion> findDistinctTipoUbicacion();

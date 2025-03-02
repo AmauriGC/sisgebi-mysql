@@ -158,4 +158,12 @@ public class Bien {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+    public Disponibilidad getDisponibilidad() {
+        return disponibilidad;
+    }
+
+    public void setDisponibilidad(Disponibilidad disponibilidad) {
+        this.disponibilidad = disponibilidad;
+    }
 }

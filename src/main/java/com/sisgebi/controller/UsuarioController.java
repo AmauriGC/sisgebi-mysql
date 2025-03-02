@@ -80,4 +80,8 @@ public class UsuarioController {
         return usuarioService.getResponsables();
     }
 
+    @GetMapping("/becarios")
+    public List<Usuario> getBecarios() {
+        return usuarioService.getBecarios();
+    }
 }

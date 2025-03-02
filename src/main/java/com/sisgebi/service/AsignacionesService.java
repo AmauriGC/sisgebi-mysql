@@ -1,13 +1,15 @@
 package com.sisgebi.service;
 
 import com.sisgebi.entity.Asignaciones;
+import com.sisgebi.entity.Usuario;
+import com.sisgebi.enums.RolUsuario;
 import com.sisgebi.enums.Status;
 import com.sisgebi.repository.AsignacionesRepository;
+import com.sisgebi.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AsignacionesService {
@@ -15,53 +17,55 @@ public class AsignacionesService {
     @Autowired
     private AsignacionesRepository asignacionesRepository;
 
-    public AsignacionesService(AsignacionesRepository asignacionesRepository) {
-        this.asignacionesRepository = asignacionesRepository;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    // Validar que el usuario no sea ADMINISTRADOR
+    private void validarUsuario(Usuario usuario) {
+        if (usuario.getRol() == RolUsuario.ADMINISTRADOR) {
+            throw new RuntimeException("No se puede asignar a un ADMINISTRADOR");
+        }
     }
 
-    // Obtener todos los Asignacioneses
+    // Obtener todas las asignaciones (excluyendo ADMINISTRADORES)
     public List<Asignaciones> getAllAsignaciones() {
         return asignacionesRepository.findAll();
     }
 
-    // Obtener Asignaciones por id
-    public Optional<Asignaciones> getAsignacionesById(Long id) {
-        return asignacionesRepository.findById(id);
+    // Obtener una asignación por ID
+    public Asignaciones getAsignacionById(Long id) {
+        return asignacionesRepository.findById(id).orElse(null);
     }
 
-    // Crear un nuevo Asignaciones
-    public Asignaciones createAsignaciones(Asignaciones Asignaciones) {
-        return asignacionesRepository.save(Asignaciones);
+    // Crear una nueva asignación (solo para RESPONSABLES y BECARIOS)
+    public Asignaciones createAsignacion(Asignaciones asignacion) {
+        Usuario usuario = asignacion.getUsuario();
+        validarUsuario(usuario); // Validar que no sea ADMINISTRADOR
+        return asignacionesRepository.save(asignacion);
     }
 
-    // Actualizar Asignaciones
-    public Asignaciones updateAsignaciones(Long id, Asignaciones asignaciones) {
+    // Actualizar una asignación (solo para RESPONSABLES y BECARIOS)
+    public Asignaciones updateAsignacion(Long id, Asignaciones asignacion) {
         if (asignacionesRepository.existsById(id)) {
-            asignaciones.setAsignacionesId(id);
-            return asignacionesRepository.save(asignaciones);
+            Usuario usuario = asignacion.getUsuario();
+            validarUsuario(usuario); // Validar que no sea ADMINISTRADOR
+            asignacion.setAsignacionesId(id);
+            return asignacionesRepository.save(asignacion);
         }
-        return null; // O puedes lanzar una excepción si no existe el Asignaciones
+        return null; // O lanzar una excepción
     }
 
-    // Eliminar Asignaciones
-    public void deleteAsignaciones(Long id) {
+    // Eliminar una asignación
+    public void deleteAsignacion(Long id) {
         asignacionesRepository.deleteById(id);
     }
 
-    // Filtrar Asignacioneses según varios atributos
-    public List<Asignaciones> filter(Long becarioId, Long responsableId, Status status) {
-        if (responsableId != null && status != null && becarioId != null) {
-            return asignacionesRepository.findByResponsable_IdAndStatusAndBecario_Id(responsableId, status, becarioId);
-        } else if (responsableId != null && status != null) {
-            return asignacionesRepository.findByResponsable_IdAndStatus(responsableId, status);
-        } else if (becarioId != null) {
-            return asignacionesRepository.findByBecario_Id(becarioId);
-        } else if (responsableId != null) {
-            return asignacionesRepository.findByResponsable_Id(responsableId);
-        } else if (status != null) {
+    // Filtrar usuarios según `Status`, `RolUsuario` y `Lugar`
+    public List<Asignaciones> filter(Status status) {
+        if (status != null) {
             return asignacionesRepository.findByStatus(status);
         } else {
-            return asignacionesRepository.findAll(); // Si no hay filtros, devuelve todos los Asignacioneses
+            return asignacionesRepository.findAll();
         }
     }
 }
