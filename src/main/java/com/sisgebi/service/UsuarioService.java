@@ -5,6 +5,7 @@ import com.sisgebi.enums.RolUsuario;
 import com.sisgebi.enums.Status;
 import com.sisgebi.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder; // Importar PasswordEncoder
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,9 +17,8 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public UsuarioService(UsuarioRepository usuarioRepository) {
-        this.usuarioRepository = usuarioRepository;
-    }
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     // Obtener todos los usuarios
     public List<Usuario> getAllUsuarios() {
@@ -32,21 +32,50 @@ public class UsuarioService {
 
     // Crear un nuevo usuario
     public Usuario createUsuario(Usuario usuario) {
+        // Hashear la contraseña antes de guardar
+        String hashedPassword = passwordEncoder.encode(usuario.getContrasena());
+        usuario.setContrasena(hashedPassword);
         return usuarioRepository.save(usuario);
     }
 
     // Actualizar usuario
     public Usuario updateUsuario(Long id, Usuario usuario) {
         if (usuarioRepository.existsById(id)) {
-            usuario.setId(id);
-            return usuarioRepository.save(usuario);
+            // Obtener el usuario existente
+            Optional<Usuario> existingUsuarioOptional = usuarioRepository.findById(id);
+            if (existingUsuarioOptional.isPresent()) {
+                Usuario existingUsuario = existingUsuarioOptional.get();
+
+                // Actualizar campos
+                existingUsuario.setNombres(usuario.getNombres());
+                existingUsuario.setApellidos(usuario.getApellidos());
+                existingUsuario.setCorreo(usuario.getCorreo());
+                existingUsuario.setLugar(usuario.getLugar());
+                existingUsuario.setRol(usuario.getRol());
+                existingUsuario.setStatus(usuario.getStatus());
+
+                // Si se proporciona una nueva contraseña, hashearla
+                if (usuario.getContrasena() != null && !usuario.getContrasena().isEmpty()) {
+                    String hashedPassword = passwordEncoder.encode(usuario.getContrasena());
+                    existingUsuario.setContrasena(hashedPassword);
+                }
+
+                return usuarioRepository.save(existingUsuario);
+            }
         }
         return null; // O puedes lanzar una excepción
     }
 
     // Eliminar usuario
     public void deleteUsuario(Long id) {
-        usuarioRepository.deleteById(id);
+        Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
+        if (usuarioOptional.isPresent()) {
+            Usuario usuario = usuarioOptional.get();
+            usuario.setStatus(Status.INACTIVO);
+            usuarioRepository.save(usuario);
+        } else {
+            return;
+        }
     }
 
     public List<Usuario> getResponsables() {

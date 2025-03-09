@@ -58,8 +58,12 @@ public class UsuarioController {
     // Eliminar un usuario
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUsuario(@PathVariable Long id) {
-        usuarioService.deleteUsuario(id);
-        return ResponseEntity.noContent().build();
+        try {
+            usuarioService.deleteUsuario(id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     // Filtrar usuarios
