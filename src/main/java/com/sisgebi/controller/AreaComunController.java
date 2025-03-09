@@ -4,6 +4,8 @@ import com.sisgebi.entity.AreaComun;
 import com.sisgebi.enums.Status;
 import com.sisgebi.service.AreaComunService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -46,8 +48,13 @@ public class AreaComunController {
 
     // Eliminar área
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        areaComunService.delete(id);
+    public ResponseEntity<Void> deleteAreaComun(@PathVariable Long id) {
+        try {
+            areaComunService.delete(id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     // Filtro para buscar áreas por nombre y estado

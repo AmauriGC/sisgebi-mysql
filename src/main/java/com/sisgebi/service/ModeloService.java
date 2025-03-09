@@ -51,7 +51,14 @@ public class ModeloService {
 
     // Eliminar modelo
     public void delete(Long id) {
-        modeloRepository.deleteById(id);
+        Optional<Modelo> modeloOptional = modeloRepository.findById(id);
+        if (modeloOptional.isPresent()) {
+            Modelo modelo = modeloOptional.get();
+            modelo.setStatus(Status.INACTIVO); // Cambia el estado a INACTIVO
+            modeloRepository.save(modelo); // Guarda el cambio en la base de datos
+        } else {
+            return;
+        }
     }
 
     // Filtrar modelos por estado y/o marca

@@ -51,9 +51,13 @@ public class TipoBienController {
 
     // Eliminar tipo de bien
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        tipoBienService.delete(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<Void> deleteTipoBien(@PathVariable Long id) {
+        try {
+            tipoBienService.delete(id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     // Filtrar tipos de bien

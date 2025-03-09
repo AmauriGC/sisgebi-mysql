@@ -51,9 +51,13 @@ public class ModeloController {
 
     // Eliminar modelo
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        modeloService.delete(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<Void> deleteModelo(@PathVariable Long id) {
+        try {
+            modeloService.delete(id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     // Filtrar modelos

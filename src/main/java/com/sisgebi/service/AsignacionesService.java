@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AsignacionesService {
@@ -56,8 +57,15 @@ public class AsignacionesService {
     }
 
     // Eliminar una asignación
-    public void deleteAsignacion(Long id) {
-        asignacionesRepository.deleteById(id);
+    public void delete(Long id) {
+        Optional<Asignaciones> asignacionesOptional = asignacionesRepository.findById(id);
+        if (asignacionesOptional.isPresent()) {
+            Asignaciones asignaciones = asignacionesOptional.get();
+            asignaciones.setStatus(Status.INACTIVO); // Cambia el estado a INACTIVO
+            asignacionesRepository.save(asignaciones); // Guarda el cambio en la base de datos
+        } else {
+            return;
+        }
     }
 
     // Filtrar usuarios según `Status`, `RolUsuario` y `Lugar`

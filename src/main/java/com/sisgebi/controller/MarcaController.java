@@ -4,6 +4,8 @@ import com.sisgebi.entity.Marca;
 import com.sisgebi.enums.Status;
 import com.sisgebi.service.MarcaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,8 +44,13 @@ public class MarcaController {
 
     // Eliminar una marca
     @DeleteMapping("/{id}")
-    public boolean delete(@PathVariable Long id) {
-        return marcaService.delete(id);
+    public ResponseEntity<Void> deleteMarca(@PathVariable Long id) {
+        try {
+            marcaService.delete(id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     // Filtrar marcas

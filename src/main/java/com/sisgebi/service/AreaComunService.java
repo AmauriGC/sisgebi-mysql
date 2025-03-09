@@ -49,7 +49,14 @@ public class AreaComunService {
 
     // Eliminar área
     public void delete(Long id) {
-        areaComunRepository.deleteById(id);
+        Optional<AreaComun> areaComunOptional = areaComunRepository.findById(id);
+        if (areaComunOptional.isPresent()) {
+            AreaComun areaComun = areaComunOptional.get();
+            areaComun.setStatus(Status.INACTIVO); // Cambia el estado a INACTIVO
+            areaComunRepository.save(areaComun); // Guarda el cambio en la base de datos
+        } else {
+            return;
+        }
     }
 
     // Filtrar áreas comunes según ID y/o estado

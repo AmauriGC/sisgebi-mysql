@@ -40,12 +40,15 @@ public class MarcaService {
     }
 
     // Eliminar una marca por ID
-    public boolean delete(Long marcaId) {
-        if (marcaRepository.existsById(marcaId)) {
-            marcaRepository.deleteById(marcaId);
-            return true;
+    public void delete(Long id) {
+        Optional<Marca> marcaOptional = marcaRepository.findById(id);
+        if (marcaOptional.isPresent()) {
+            Marca marca = marcaOptional.get();
+            marca.setStatus(Status.INACTIVO); // Cambia el estado a INACTIVO
+            marcaRepository.save(marca); // Guarda el cambio en la base de datos
+        } else {
+            return;
         }
-        return false; // O lanzar excepción
     }
 
     // Filtrar marcas según ID y/o estado

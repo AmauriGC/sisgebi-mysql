@@ -47,8 +47,12 @@ public class AsignacionesController {
     // Eliminar una asignación
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAsignacion(@PathVariable Long id) {
-        asignacionesService.deleteAsignacion(id);
-        return ResponseEntity.noContent().build();
+        try {
+            asignacionesService.delete(id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     // Filtrar usuarios

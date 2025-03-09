@@ -45,7 +45,14 @@ public class TipoBienService {
 
     // Eliminar tipo de bien
     public void delete(Long id) {
-        tipoBienRepository.deleteById(id);
+        Optional<TipoBien> tipoBienOptional = tipoBienRepository.findById(id);
+        if (tipoBienOptional.isPresent()) {
+            TipoBien tipoBien = tipoBienOptional.get();
+            tipoBien.setStatus(Status.INACTIVO); // Cambia el estado a INACTIVO
+            tipoBienRepository.save(tipoBien); // Guarda el cambio en la base de datos
+        } else {
+            return;
+        }
     }
 
     // Filtrar tipos de bien según ID y/o estado
