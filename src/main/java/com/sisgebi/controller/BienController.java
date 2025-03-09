@@ -50,21 +50,26 @@ public class BienController {
     // Eliminar un bien
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBien(@PathVariable Long id) {
-        bienService.deleteBien(id);
-        return ResponseEntity.noContent().build();
+        try {
+            bienService.deleteBien(id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Devuelve 500 en caso de error
+        }
     }
 
-    // Filtrar bienes
     @GetMapping("/filter")
-    public List<Bien> filter(@RequestParam(required = false) String codigo,
-                             @RequestParam(required = false) String numeroSerie,
-                             @RequestParam(required = false) Long tipoBienId,
-                             @RequestParam(required = false) Long marcaId,
-                             @RequestParam(required = false) Long modeloId,
-                             @RequestParam(required = false) TipoUbicacion tipoUbicacion,
-                             @RequestParam(required = false) Long areaComunId,
-                             @RequestParam(required = false) Status status,
-                             @RequestParam(required = false) Disponibilidad disponibilidad) {
-        return bienService.filter(codigo, numeroSerie, tipoBienId, marcaId, modeloId, tipoUbicacion, areaComunId, status, disponibilidad);
+    public ResponseEntity<List<Bien>> filterBienes(
+            @RequestParam(required = false) Long tipoBienId,
+            @RequestParam(required = false) Long marcaId,
+            @RequestParam(required = false) Long modeloId,
+            @RequestParam(required = false) TipoUbicacion tipoUbicacion,
+            @RequestParam(required = false) Long areaComunId,
+            @RequestParam(required = false) Long id,
+            @RequestParam(required = false) Status status,
+            @RequestParam(required = false) Disponibilidad disponibilidad) {
+
+        List<Bien> bienes = bienService.filter(tipoBienId, marcaId, modeloId, tipoUbicacion,areaComunId, id, status, disponibilidad);
+        return ResponseEntity.ok(bienes);
     }
 }

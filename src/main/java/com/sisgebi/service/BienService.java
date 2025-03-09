@@ -1,11 +1,14 @@
 package com.sisgebi.service;
 
 import com.sisgebi.entity.Bien;
+import com.sisgebi.entity.Usuario;
 import com.sisgebi.enums.Disponibilidad;
 import com.sisgebi.enums.Status;
 import com.sisgebi.enums.TipoUbicacion;
 import com.sisgebi.repository.BienRepository;
+import jakarta.xml.ws.http.HTTPException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -49,39 +52,18 @@ public class BienService {
 
     // Eliminar bien
     public void deleteBien(Long id) {
-        bienRepository.deleteById(id);
-    }
-
-    // Filtrar bienes según varios atributos
-    public List<Bien> filter(String codigo, String numeroSerie, Long tipoBienId, Long marcaId, Long modeloId,
-                             TipoUbicacion tipoUbicacion, Long areaComunId, Status status, Disponibilidad disponibilidad) {
-
-        if (areaComunId != null && disponibilidad != null && status != null) {
-            return bienRepository.findByAreaComun_AreaIdAndDisponibilidadAndStatus(areaComunId, disponibilidad, status);
-        } else if (status != null && disponibilidad != null) {
-            return bienRepository.findByStatusAndDisponibilidad(status, disponibilidad);
-        } else if (areaComunId != null && disponibilidad != null) {
-            return bienRepository.findByAreaComun_AreaIdAndDisponibilidad(areaComunId, disponibilidad);
-        } else if (codigo != null) {
-            return bienRepository.findByCodigo(codigo);
-        } else if (numeroSerie != null) {
-            return bienRepository.findByNumeroSerie(numeroSerie);
-        } else if (tipoBienId != null) {
-            return bienRepository.findByTipoBien_TipoBienId(tipoBienId);
-        } else if (marcaId != null) {
-            return bienRepository.findByMarca_MarcaId(marcaId);
-        } else if (modeloId != null) {
-            return bienRepository.findByModelo_ModeloId(modeloId);
-        } else if (tipoUbicacion != null) {
-            return bienRepository.findByTipoUbicacion(tipoUbicacion);
-        } else if (areaComunId != null) {
-            return bienRepository.findByAreaComun_AreaId(areaComunId);
-        } else if (status != null) {
-            return bienRepository.findByStatus(status);
-        } else if (disponibilidad != null) {
-            return bienRepository.findByDisponibilidad(disponibilidad);
+        Optional<Bien> bienOptional = bienRepository.findById(id);
+        if (bienOptional.isPresent()) {
+            Bien bien = bienOptional.get();
+            bien.setStatus(Status.INACTIVO); // Cambia el estado a INACTIVO
+            bienRepository.save(bien); // Guarda el cambio en la base de datos
         } else {
-            return bienRepository.findAll(); // Si no hay filtros, devuelve todos los bienes
+            return;
         }
+    }
+    // Filtrar bienes según varios atributos
+    public List<Bien> filter(Long tipoBienId, Long marcaId, Long modeloId, TipoUbicacion tipoUbicacion,
+                             Long areaComunId, Long id, Status status, Disponibilidad disponibilidad) {
+        return bienRepository.filter(tipoBienId, marcaId, modeloId, tipoUbicacion,areaComunId, id, status, disponibilidad);
     }
 }

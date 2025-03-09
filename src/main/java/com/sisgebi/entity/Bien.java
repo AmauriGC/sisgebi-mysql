@@ -45,6 +45,10 @@ public class Bien {
     @JoinColumn(name = "id_area_comun", nullable = true)
     private AreaComun areaComun;
 
+    @ManyToOne
+    @JoinColumn(name = "id_usuario", nullable = false)
+    private Usuario usuario;
+
     @NotNull(message = "El estado del bien es obligatorio")
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -165,5 +169,13 @@ public class Bien {
 
     public void setDisponibilidad(Disponibilidad disponibilidad) {
         this.disponibilidad = disponibilidad;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 }
