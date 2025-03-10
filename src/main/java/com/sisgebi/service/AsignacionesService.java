@@ -69,9 +69,16 @@ public class AsignacionesService {
     }
 
     // Filtrar usuarios según `Status`, `RolUsuario` y `Lugar`
-    public List<Asignaciones> filter(Status status) {
-        if (status != null) {
+    public List<Asignaciones> filter(Status status, Long id) {
+        if (status != null && id != null) {
+            Optional<Usuario> usuario = usuarioRepository.findById(id);
+            return usuario.map(value -> asignacionesRepository.findByStatusAndUsuario(status, value))
+                    .orElseGet(List::of);
+        } else if (status != null) {
             return asignacionesRepository.findByStatus(status);
+        } else if (id != null) {
+            Optional<Usuario> usuario = usuarioRepository.findById(id);
+            return usuario.map(asignacionesRepository::findByUsuario).orElseGet(List::of);
         } else {
             return asignacionesRepository.findAll();
         }
