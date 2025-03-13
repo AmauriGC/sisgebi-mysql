@@ -59,6 +59,6 @@ public class AsignacionesController {
     @GetMapping("/filter")
     public List<Asignaciones> filter(@RequestParam(required = false) Status status,
                                      @RequestParam(required = false) Long id) {
-        return asignacionesService.filter(status, id);
+        return asignacionesService.filter(id, status);
     }
 }

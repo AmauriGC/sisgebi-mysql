@@ -4,8 +4,6 @@ import com.sisgebi.enums.Status;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Table(name = "asignaciones")
 public class Asignaciones {
@@ -14,33 +12,18 @@ public class Asignaciones {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long asignacionesId;
 
-    // puedo poner en otra tabla para asignaciones
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
-    private Usuario usuario;
-
-    @NotNull(message = "El estado del bien es obligatorio")
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Status status;
+    private Usuario becario;
 
     @ManyToOne
     @JoinColumn(name = "bien_id", nullable = false)
     private Bien bien;
 
-    @Column(updatable = false)
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
+    @NotNull(message = "El estado del bien es obligatorio")
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Status status;
 
     public Long getAsignacionesId() {
         return asignacionesId;
@@ -50,36 +33,12 @@ public class Asignaciones {
         this.asignacionesId = asignacionesId;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public Usuario getBecario() {
+        return becario;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setBecario(Usuario becario) {
+        this.becario = becario;
     }
 
     public Bien getBien() {
@@ -88,5 +47,13 @@ public class Asignaciones {
 
     public void setBien(Bien bien) {
         this.bien = bien;
+    }
+
+    public @NotNull(message = "El estado del bien es obligatorio") Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(@NotNull(message = "El estado del bien es obligatorio") Status status) {
+        this.status = status;
     }
 }

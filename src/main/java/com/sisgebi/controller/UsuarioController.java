@@ -88,4 +88,9 @@ public class UsuarioController {
     public List<Usuario> getBecarios() {
         return usuarioService.getBecarios();
     }
+
+    @GetMapping("/administradores")
+    public List<Usuario> getAdministradores() {
+        return usuarioService.getAdministradores();
+    }
 }

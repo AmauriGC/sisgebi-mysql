@@ -5,7 +5,7 @@ import com.sisgebi.enums.RolUsuario;
 import com.sisgebi.enums.Status;
 import com.sisgebi.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder; // Importar PasswordEncoder
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -85,6 +85,11 @@ public class UsuarioService {
     public List<Usuario> getBecarios() {
         return usuarioRepository.findByRol(RolUsuario.BECARIO);
     }
+
+    public List<Usuario> getAdministradores() {
+        return usuarioRepository.findByRol(RolUsuario.ADMINISTRADOR);
+    }
+
 
     // Filtrar usuarios según `Status`, `RolUsuario` y `Lugar`
     public List<Usuario> filter(Status status, RolUsuario rol, String lugar) {

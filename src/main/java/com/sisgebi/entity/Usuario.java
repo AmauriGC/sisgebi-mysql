@@ -5,8 +5,6 @@ import com.sisgebi.enums.Status;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Table(name = "usuario")
 public class Usuario {
@@ -25,11 +23,11 @@ public class Usuario {
 
     @NotNull(message = "El correo es obligatorio")
     @Column(unique = true, nullable = false)
-    private String correo; // Se usa como username
+    private String correo;
 
     @NotNull(message = "La contrasena es obligatoria")
     @Column(nullable = false)
-    private String contrasena; // Cifrada con BCrypt
+    private String contrasena;
 
     @NotNull(message = "El lugar es obligatorio")
     @Column(nullable = false)
@@ -45,22 +43,6 @@ public class Usuario {
     @Column(nullable = false)
     private Status status;
 
-    @Column(updatable = false)
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    // Getters y setters
-
     public Long getId() {
         return id;
     }
@@ -69,75 +51,59 @@ public class Usuario {
         this.id = id;
     }
 
-    public String getNombres() {
+    public @NotNull(message = "Los nombres son obligatorios") String getNombres() {
         return nombres;
     }
 
-    public void setNombres(String nombres) {
+    public void setNombres(@NotNull(message = "Los nombres son obligatorios") String nombres) {
         this.nombres = nombres;
     }
 
-    public String getApellidos() {
+    public @NotNull(message = "El apellidos son obligatorios") String getApellidos() {
         return apellidos;
     }
 
-    public void setApellidos(String apellidos) {
+    public void setApellidos(@NotNull(message = "El apellidos son obligatorios") String apellidos) {
         this.apellidos = apellidos;
     }
 
-    public String getCorreo() {
+    public @NotNull(message = "El correo es obligatorio") String getCorreo() {
         return correo;
     }
 
-    public void setCorreo(String correo) {
+    public void setCorreo(@NotNull(message = "El correo es obligatorio") String correo) {
         this.correo = correo;
     }
 
-    public String getContrasena() {
+    public @NotNull(message = "La contrasena es obligatoria") String getContrasena() {
         return contrasena;
     }
 
-    public void setContrasena(String contrasena) {
+    public void setContrasena(@NotNull(message = "La contrasena es obligatoria") String contrasena) {
         this.contrasena = contrasena;
     }
 
-    public String getLugar() {
+    public @NotNull(message = "El lugar es obligatorio") String getLugar() {
         return lugar;
     }
 
-    public void setLugar(String lugar) {
+    public void setLugar(@NotNull(message = "El lugar es obligatorio") String lugar) {
         this.lugar = lugar;
     }
 
-    public RolUsuario getRol() {
+    public @NotNull(message = "El rol del usuario es obligatorio") RolUsuario getRol() {
         return rol;
     }
 
-    public void setRol(RolUsuario rol) {
+    public void setRol(@NotNull(message = "El rol del usuario es obligatorio") RolUsuario rol) {
         this.rol = rol;
     }
 
-    public Status getStatus() {
+    public @NotNull(message = "El estado del usuario es obligatorio") Status getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(@NotNull(message = "El estado del usuario es obligatorio") Status status) {
         this.status = status;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
     }
 }

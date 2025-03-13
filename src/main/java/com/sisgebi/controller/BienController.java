@@ -3,7 +3,6 @@ package com.sisgebi.controller;
 import com.sisgebi.entity.Bien;
 import com.sisgebi.enums.Disponibilidad;
 import com.sisgebi.enums.Status;
-import com.sisgebi.enums.TipoUbicacion;
 import com.sisgebi.service.BienService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -63,13 +62,11 @@ public class BienController {
             @RequestParam(required = false) Long tipoBienId,
             @RequestParam(required = false) Long marcaId,
             @RequestParam(required = false) Long modeloId,
-            @RequestParam(required = false) TipoUbicacion tipoUbicacion,
-            @RequestParam(required = false) Long areaComunId,
-            @RequestParam(required = false) Long id,
+            @RequestParam(required = false) Long areaId,
             @RequestParam(required = false) Status status,
             @RequestParam(required = false) Disponibilidad disponibilidad) {
 
-        List<Bien> bienes = bienService.filter(tipoBienId, marcaId, modeloId, tipoUbicacion,areaComunId, id, status, disponibilidad);
+        List<Bien> bienes = bienService.filter(tipoBienId, marcaId, modeloId, areaId, status, disponibilidad);
         return ResponseEntity.ok(bienes);
     }
 }

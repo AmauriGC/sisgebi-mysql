@@ -1,9 +1,7 @@
 package com.sisgebi.service;
 
-import com.sisgebi.entity.Marca;
 import com.sisgebi.entity.Modelo;
 import com.sisgebi.enums.Status;
-import com.sisgebi.repository.MarcaRepository;
 import com.sisgebi.repository.ModeloRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,14 +14,6 @@ public class ModeloService {
 
     @Autowired
     private ModeloRepository modeloRepository;
-
-    @Autowired
-    private MarcaRepository marcaRepository;  // Inyectar MarcaRepository
-
-    public ModeloService(ModeloRepository modeloRepository, MarcaRepository marcaRepository) {
-        this.modeloRepository = modeloRepository;
-        this.marcaRepository = marcaRepository;
-    }
 
     // Obtener todos los modelos
     public List<Modelo> getAll() {
@@ -61,19 +51,16 @@ public class ModeloService {
         }
     }
 
-    // Filtrar modelos por estado y/o marca
-    public List<Modelo> filter(Status status, Long marcaId) {
-        if (status != null && marcaId != null) {
-            Optional<Marca> marca = marcaRepository.findById(marcaId);
-            return marca.map(value -> modeloRepository.findByStatusAndMarca(status, value))
-                    .orElseGet(List::of);
+    // Filtrar modelos por ID y/o estado
+    public List<Modelo> filter(Long modeloId, Status status) {
+        if (modeloId != null && status != null) {
+            return modeloRepository.findBymodeloIdAndStatus(modeloId, status); // Filtra por modelo y estado
+        } else if (modeloId != null) {
+            return modeloRepository.findById(modeloId).map(List::of).orElse(List.of()); // Filtra solo por modelo
         } else if (status != null) {
-            return modeloRepository.findByStatus(status);
-        } else if (marcaId != null) {
-            Optional<Marca> marca = marcaRepository.findById(marcaId);
-            return marca.map(modeloRepository::findByMarca).orElseGet(List::of);
+            return modeloRepository.findByStatus(status); // Filtra solo por estado
         } else {
-            return modeloRepository.findAll();
+            return modeloRepository.findAll(); // Si no hay filtros, devuelve todo
         }
     }
 }

@@ -1,14 +1,10 @@
 package com.sisgebi.service;
 
 import com.sisgebi.entity.Bien;
-import com.sisgebi.entity.Usuario;
 import com.sisgebi.enums.Disponibilidad;
 import com.sisgebi.enums.Status;
-import com.sisgebi.enums.TipoUbicacion;
 import com.sisgebi.repository.BienRepository;
-import jakarta.xml.ws.http.HTTPException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,7 +40,7 @@ public class BienService {
     // Actualizar bien
     public Bien updateBien(Long id, Bien bien) {
         if (bienRepository.existsById(id)) {
-            bien.setIdBien(id);
+            bien.setBienId(id);
             return bienRepository.save(bien);
         }
         return null; // O puedes lanzar una excepción si no existe el bien
@@ -61,9 +57,10 @@ public class BienService {
             return;
         }
     }
+
     // Filtrar bienes según varios atributos
-    public List<Bien> filter(Long tipoBienId, Long marcaId, Long modeloId, TipoUbicacion tipoUbicacion,
-                             Long areaComunId, Long id, Status status, Disponibilidad disponibilidad) {
-        return bienRepository.filter(tipoBienId, marcaId, modeloId, tipoUbicacion,areaComunId, id, status, disponibilidad);
+    public List<Bien> filter(Long tipoBienId, Long marcaId, Long modeloId,
+                             Long areaId, Status status, Disponibilidad disponibilidad) {
+        return bienRepository.filter(tipoBienId, marcaId, modeloId, areaId, status, disponibilidad);
     }
 }

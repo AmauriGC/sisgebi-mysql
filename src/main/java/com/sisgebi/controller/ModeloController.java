@@ -63,7 +63,7 @@ public class ModeloController {
     // Filtrar modelos
     @GetMapping("/filter")
     public List<Modelo> filter(@RequestParam(required = false) Status status,
-                               @RequestParam(required = false) Long marcaId) {
-        return modeloService.filter(status, marcaId);
+                               @RequestParam(required = false) Long modeloId) {
+        return modeloService.filter(modeloId, status);
     }
 }

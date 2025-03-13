@@ -5,8 +5,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Table(name = "marca")
 public class Marca {
@@ -24,22 +22,6 @@ public class Marca {
     @Column(nullable = false)
     private Status status;
 
-    @Column(updatable = false)
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    // Getters y setters
-
     public Long getMarcaId() {
         return marcaId;
     }
@@ -48,35 +30,19 @@ public class Marca {
         this.marcaId = marcaId;
     }
 
-    public String getNombreMarca() {
+    public @NotBlank(message = "El nombre de la marca es obligatorio") String getNombreMarca() {
         return nombreMarca;
     }
 
-    public void setNombreMarca(String nombreMarca) {
+    public void setNombreMarca(@NotBlank(message = "El nombre de la marca es obligatorio") String nombreMarca) {
         this.nombreMarca = nombreMarca;
     }
 
-    public Status getStatus() {
+    public @NotNull(message = "El estado de la marca es obligatorio") Status getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(@NotNull(message = "El estado de la marca es obligatorio") Status status) {
         this.status = status;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
     }
 }

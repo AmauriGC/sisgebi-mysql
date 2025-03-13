@@ -2,12 +2,9 @@ package com.sisgebi.entity;
 
 import com.sisgebi.enums.Disponibilidad;
 import com.sisgebi.enums.Status;
-import com.sisgebi.enums.TipoUbicacion;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "bien")
@@ -15,7 +12,7 @@ public class Bien {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idBien;
+    private Long bienId;
 
     @NotBlank(message = "El código del bien es obligatorio")
     @Column(nullable = false, unique = true)
@@ -37,17 +34,9 @@ public class Bien {
     @JoinColumn(name = "id_modelo", nullable = false)
     private Modelo modelo;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private TipoUbicacion tipoUbicacion;
-
     @ManyToOne
     @JoinColumn(name = "id_area_comun", nullable = true)
     private AreaComun areaComun;
-
-    @ManyToOne
-    @JoinColumn(name = "id_usuario", nullable = false)
-    private Usuario usuario;
 
     @NotNull(message = "El estado del bien es obligatorio")
     @Enumerated(EnumType.STRING)
@@ -59,43 +48,30 @@ public class Bien {
     @Column(nullable = false)
     private Disponibilidad disponibilidad;
 
-    @Column(updatable = false)
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    @Column(nullable = false)
+    private String motivo;
 
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
+    public Long getBienId() {
+        return bienId;
     }
 
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
+    public void setBienId(Long bienId) {
+        this.bienId = bienId;
     }
 
-    // Getters y setters...
-
-    public Long getIdBien() {
-        return idBien;
-    }
-
-    public void setIdBien(Long idBien) {
-        this.idBien = idBien;
-    }
-
-    public String getCodigo() {
+    public @NotBlank(message = "El código del bien es obligatorio") String getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(String codigo) {
+    public void setCodigo(@NotBlank(message = "El código del bien es obligatorio") String codigo) {
         this.codigo = codigo;
     }
 
-    public String getNumeroSerie() {
+    public @NotBlank(message = "El número de serie es obligatorio") String getNumeroSerie() {
         return numeroSerie;
     }
 
-    public void setNumeroSerie(String numeroSerie) {
+    public void setNumeroSerie(@NotBlank(message = "El número de serie es obligatorio") String numeroSerie) {
         this.numeroSerie = numeroSerie;
     }
 
@@ -123,14 +99,6 @@ public class Bien {
         this.modelo = modelo;
     }
 
-    public TipoUbicacion getTipoUbicacion() {
-        return tipoUbicacion;
-    }
-
-    public void setTipoUbicacion(TipoUbicacion tipoUbicacion) {
-        this.tipoUbicacion = tipoUbicacion;
-    }
-
     public AreaComun getAreaComun() {
         return areaComun;
     }
@@ -139,43 +107,27 @@ public class Bien {
         this.areaComun = areaComun;
     }
 
-    public Status getStatus() {
+    public @NotNull(message = "El estado del bien es obligatorio") Status getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(@NotNull(message = "El estado del bien es obligatorio") Status status) {
         this.status = status;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public Disponibilidad getDisponibilidad() {
+    public @NotNull(message = "La disponibilidad del bien es obligatoria") Disponibilidad getDisponibilidad() {
         return disponibilidad;
     }
 
-    public void setDisponibilidad(Disponibilidad disponibilidad) {
+    public void setDisponibilidad(@NotNull(message = "La disponibilidad del bien es obligatoria") Disponibilidad disponibilidad) {
         this.disponibilidad = disponibilidad;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public @NotNull(message = "El motivo debe de ser obligatorio") String getMotivo() {
+        return motivo;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setMotivo(@NotNull(message = "El motivo debe de ser obligatorio") String motivo) {
+        this.motivo = motivo;
     }
 }

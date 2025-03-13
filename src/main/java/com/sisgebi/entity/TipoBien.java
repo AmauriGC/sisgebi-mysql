@@ -5,8 +5,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Table(name = "tipo_bien")
 public class TipoBien {
@@ -24,21 +22,6 @@ public class TipoBien {
     @Column(nullable = false)
     private Status status;
 
-    @Column(updatable = false)
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    // Getters y setters
     public Long getTipoBienId() {
         return tipoBienId;
     }
@@ -47,35 +30,19 @@ public class TipoBien {
         this.tipoBienId = tipoBienId;
     }
 
-    public String getNombreTipoBien() {
+    public @NotBlank(message = "El nombre del tipo de bien es obligatorio") String getNombreTipoBien() {
         return nombreTipoBien;
     }
 
-    public void setNombreTipoBien(String nombreTipoBien) {
+    public void setNombreTipoBien(@NotBlank(message = "El nombre del tipo de bien es obligatorio") String nombreTipoBien) {
         this.nombreTipoBien = nombreTipoBien;
     }
 
-    public Status getStatus() {
+    public @NotNull(message = "El estado del tipo de bien es obligatorio") Status getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(@NotNull(message = "El estado del tipo de bien es obligatorio") Status status) {
         this.status = status;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
     }
 }

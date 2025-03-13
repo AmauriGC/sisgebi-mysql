@@ -11,7 +11,7 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider {
     private final String SECRET_KEY = "z2/xmfwvIfoCpwhf3oIigofeYFuxL8F3g4Vy9jIOCTR1iQ+oUbVnqu8aE2WYFmfqt4x5n97yV1firAmOlQ32uQ==";
-    private final long EXPIRATION_TIME = 86400000; // 1 día en milisegundos
+    private final long EXPIRATION_TIME = 1000 * 60 * 60; // 1 hora
 
     public String generateToken(String email, String role) { // Ahora recibe email y rol
         return Jwts.builder()

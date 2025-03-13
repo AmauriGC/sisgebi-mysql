@@ -5,8 +5,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Table(name = "modelo")
 public class Modelo {
@@ -28,26 +26,6 @@ public class Modelo {
     @Column(nullable = false)
     private Status status;
 
-    @ManyToOne
-    @JoinColumn(name = "marcaId")
-    private Marca marca;
-
-    @Column(updatable = false)
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    // Getters y setters
-
     public Long getModeloId() {
         return modeloId;
     }
@@ -56,11 +34,11 @@ public class Modelo {
         this.modeloId = modeloId;
     }
 
-    public String getNombreModelo() {
+    public @NotBlank(message = "El nombre del modelo es obligatorio") String getNombreModelo() {
         return nombreModelo;
     }
 
-    public void setNombreModelo(String nombreModelo) {
+    public void setNombreModelo(@NotBlank(message = "El nombre del modelo es obligatorio") String nombreModelo) {
         this.nombreModelo = nombreModelo;
     }
 
@@ -72,35 +50,11 @@ public class Modelo {
         this.foto = foto;
     }
 
-    public Status getStatus() {
+    public @NotNull(message = "El estado del modelo es obligatorio") Status getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(@NotNull(message = "El estado del modelo es obligatorio") Status status) {
         this.status = status;
-    }
-
-    public Marca getMarca() {
-        return marca;
-    }
-
-    public void setMarca(Marca marca) {
-        this.marca = marca;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
     }
 }

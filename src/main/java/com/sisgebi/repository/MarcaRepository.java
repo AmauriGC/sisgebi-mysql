@@ -13,6 +13,6 @@ public interface MarcaRepository extends JpaRepository<Marca, Long> {
     // Filtrar por ID de marca y estado
     List<Marca> findBymarcaIdAndStatus(Long marcaId, Status status);
 
-    // Filtrar solo por estado (cuando el checkbox de status está marcado)
+    // Filtrar solo por estado
     List<Marca> findByStatus(Status status);
 }
