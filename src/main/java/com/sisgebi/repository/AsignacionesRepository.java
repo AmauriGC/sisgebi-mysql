@@ -14,8 +14,8 @@ public interface AsignacionesRepository extends JpaRepository<Asignaciones, Long
     List<Asignaciones> findByStatus(Status status);
 
     // Filtrar por usuario
-    List<Asignaciones> findByBecarioId(Long id);
+    List<Asignaciones> findByUsuarioId(Long id);
 
     // Filtrar por estado y usuario
-    List<Asignaciones> findByStatusAndBecarioId(Status status, Long id);
+    List<Asignaciones> findByStatusAndUsuarioId(Status status, Long id);
 }

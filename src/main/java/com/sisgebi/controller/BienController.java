@@ -46,14 +46,14 @@ public class BienController {
         return updatedBien != null ? ResponseEntity.ok(updatedBien) : ResponseEntity.notFound().build();
     }
 
-    // Eliminar un bien
+    // Eliminar un bien con motivo
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBien(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteBien(@PathVariable Long id, @RequestParam String motivo) {
         try {
-            bienService.deleteBien(id);
+            bienService.deleteBien(id, motivo);
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Devuelve 500 en caso de error
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 

@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "bien")
 public class Bien {
@@ -48,8 +50,15 @@ public class Bien {
     @Column(nullable = false)
     private Disponibilidad disponibilidad;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String motivo;
+
+    private LocalDateTime deleteAt;
+
+    @PreUpdate
+    protected void onDelete() {
+        this.deleteAt = LocalDateTime.now();
+    }
 
     public Long getBienId() {
         return bienId;
@@ -123,11 +132,19 @@ public class Bien {
         this.disponibilidad = disponibilidad;
     }
 
-    public @NotNull(message = "El motivo debe de ser obligatorio") String getMotivo() {
+    public String getMotivo() {
         return motivo;
     }
 
-    public void setMotivo(@NotNull(message = "El motivo debe de ser obligatorio") String motivo) {
+    public void setMotivo(String motivo) {
         this.motivo = motivo;
+    }
+
+    public LocalDateTime getDeleteAt() {
+        return deleteAt;
+    }
+
+    public void setDeleteAt(LocalDateTime deleteAt) {
+        this.deleteAt = deleteAt;
     }
 }

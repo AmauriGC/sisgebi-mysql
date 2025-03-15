@@ -12,6 +12,7 @@ import com.sisgebi.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,14 +28,10 @@ public class AsignacionesService {
     @Autowired
     private BienRepository bienRepository;
 
-
-    // Validar que el usuario no sea ADMINISTRADOR
+    // Validar que el usuario sea BECARIO
     private void validarUsuario(Usuario usuario) {
-        if (usuario.getRol() == RolUsuario.ADMINISTRADOR) {
-            throw new RuntimeException("No se puede asignar a un ADMINISTRADOR");
-        }
-        if (usuario.getRol() == RolUsuario.RESPONSABLE) {
-            throw new RuntimeException("No se puede asignar a un RESPONSABLE");
+        if (usuario.getRol() != RolUsuario.BECARIO) {
+            throw new RuntimeException("Solo los usuarios con rol BECARIO pueden ser asignados a un bien.");
         }
     }
 
@@ -50,12 +47,17 @@ public class AsignacionesService {
 
     // Crear una nueva asignación y actualizar la disponibilidad del bien
     public Asignaciones createAsignacion(Asignaciones asignacion) {
-        Usuario usuario = asignacion.getBecario();
-        validarUsuario(usuario); // Validar que no sea ADMINISTRADOR o RESPONSABLE
+        Usuario usuario = asignacion.getUsuario();
+        validarUsuario(usuario); // Validar que el usuario sea BECARIO
 
         Bien bien = asignacion.getBien();
         if (bien == null || bienRepository.findById(bien.getBienId()).isEmpty()) {
             throw new RuntimeException("El bien no existe.");
+        }
+
+        // Verificar si el bien ya está ocupado
+        if (bien.getDisponibilidad() == Disponibilidad.OCUPADO) {
+            throw new RuntimeException("El bien ya está ocupado.");
         }
 
         // Actualizar disponibilidad del bien a OCUPADO
@@ -68,14 +70,15 @@ public class AsignacionesService {
     // Actualizar una asignación (solo para RESPONSABLES y BECARIOS)
     public Asignaciones updateAsignacion(Long id, Asignaciones asignacion) {
         if (asignacionesRepository.existsById(id)) {
-            Usuario usuario = asignacion.getBecario();
-            validarUsuario(usuario); // Validar que no sea ADMINISTRADOR o RESPONSABLE
+            Usuario usuario = asignacion.getUsuario();
+            validarUsuario(usuario); // Validar que el usuario sea BECARIO
             asignacion.setAsignacionesId(id);
             return asignacionesRepository.save(asignacion);
         }
         return null; // O lanzar una excepción
     }
 
+    // Eliminar una asignación y liberar el bien
     public void delete(Long id) {
         Optional<Asignaciones> asignacionesOptional = asignacionesRepository.findById(id);
         if (asignacionesOptional.isPresent()) {
@@ -99,14 +102,13 @@ public class AsignacionesService {
     // Filtrar asignaciones por usuario y/o estado
     public List<Asignaciones> filter(Long id, Status status) {
         if (id != null && status != null) {
-            return asignacionesRepository.findByStatusAndBecarioId(status, id);
+            return asignacionesRepository.findByStatusAndUsuarioId(status, id);
         } else if (id != null) {
-            return asignacionesRepository.findByBecarioId(id);
+            return asignacionesRepository.findByUsuarioId(id);
         } else if (status != null) {
             return asignacionesRepository.findByStatus(status);
         } else {
             return asignacionesRepository.findAll();
         }
     }
-
 }

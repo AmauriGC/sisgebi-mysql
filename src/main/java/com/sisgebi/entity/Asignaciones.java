@@ -14,7 +14,7 @@ public class Asignaciones {
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
-    private Usuario becario;
+    private Usuario usuario;
 
     @ManyToOne
     @JoinColumn(name = "bien_id", nullable = false)
@@ -33,12 +33,12 @@ public class Asignaciones {
         this.asignacionesId = asignacionesId;
     }
 
-    public Usuario getBecario() {
-        return becario;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setBecario(Usuario becario) {
-        this.becario = becario;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     public Bien getBien() {

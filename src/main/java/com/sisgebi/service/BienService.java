@@ -7,6 +7,7 @@ import com.sisgebi.repository.BienRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,15 +47,17 @@ public class BienService {
         return null; // O puedes lanzar una excepción si no existe el bien
     }
 
-    // Eliminar bien
-    public void deleteBien(Long id) {
+    // Eliminar bien (borrado lógico con motivo)
+    public void deleteBien(Long id, String motivo) {
         Optional<Bien> bienOptional = bienRepository.findById(id);
         if (bienOptional.isPresent()) {
             Bien bien = bienOptional.get();
-            bien.setStatus(Status.INACTIVO); // Cambia el estado a INACTIVO
-            bienRepository.save(bien); // Guarda el cambio en la base de datos
+            bien.setStatus(Status.INACTIVO); // Cambiar estado a INACTIVO
+            bien.setMotivo(motivo); // Establecer el motivo de la eliminación
+            bien.setDeleteAt(LocalDateTime.now()); // Establecer la fecha de eliminación
+            bienRepository.save(bien); // Guardar el cambio en la base de datos
         } else {
-            return;
+            return; // Si no se encuentra el bien, simplemente regresa
         }
     }
 
