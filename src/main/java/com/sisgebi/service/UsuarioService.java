@@ -41,7 +41,6 @@ public class UsuarioService {
     // Actualizar usuario
     public Usuario updateUsuario(Long id, Usuario usuario) {
         if (usuarioRepository.existsById(id)) {
-            // Obtener el usuario existente
             Optional<Usuario> existingUsuarioOptional = usuarioRepository.findById(id);
             if (existingUsuarioOptional.isPresent()) {
                 Usuario existingUsuario = existingUsuarioOptional.get();
@@ -54,7 +53,7 @@ public class UsuarioService {
                 existingUsuario.setRol(usuario.getRol());
                 existingUsuario.setStatus(usuario.getStatus());
 
-                // Si se proporciona una nueva contraseña, hashearla
+                // Solo hashear la contraseña si se proporciona una nueva
                 if (usuario.getContrasena() != null && !usuario.getContrasena().isEmpty()) {
                     String hashedPassword = passwordEncoder.encode(usuario.getContrasena());
                     existingUsuario.setContrasena(hashedPassword);
@@ -63,18 +62,18 @@ public class UsuarioService {
                 return usuarioRepository.save(existingUsuario);
             }
         }
-        return null; // O puedes lanzar una excepción
+        return null; // O lanzar una excepción
     }
 
-    // Eliminar usuario
+    // Eliminar usuario (eliminación lógica)
     public void deleteUsuario(Long id) {
         Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
         if (usuarioOptional.isPresent()) {
             Usuario usuario = usuarioOptional.get();
-            usuario.setStatus(Status.INACTIVO);
+            usuario.setStatus(Status.INACTIVO); // Solo actualiza el estado
             usuarioRepository.save(usuario);
         } else {
-            return;
+            return; // O lanzar una excepción
         }
     }
 

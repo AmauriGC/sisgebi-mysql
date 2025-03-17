@@ -93,16 +93,16 @@ INSERT INTO tipo_bien (nombre_tipo_bien, status) VALUES
 INSERT INTO bien (codigo, numero_serie, id_tipo_bien, id_marca, id_modelo, id_area_comun, status, disponibilidad, motivo)
 VALUES
   ('BIEN-001', 'SERIE-001', 2, 1, 1, 1, 'ACTIVO', 'DISPONIBLE', ''),
-  ('BIEN-002', 'SERIE-002', 1, 2, 2, 2, 'ACTIVO', 'DISPONIBLE', 'Bien en mantenimiento'),
+  ('BIEN-002', 'SERIE-002', 1, 2, 2, 2, 'ACTIVO', 'DISPONIBLE', ''),
   ('BIEN-003', 'SERIE-003', 3, 3, 3, 3, 'ACTIVO', 'DISPONIBLE', ''),
-  ('BIEN-004', 'SERIE-004', 4, 4, 4, 4, 'ACTIVO', 'DISPONIBLE', 'Bien en almacenamiento'),
+  ('BIEN-004', 'SERIE-004', 4, 4, 4, 4, 'ACTIVO', 'DISPONIBLE', ''),
   ('BIEN-005', 'SERIE-005', 5, 5, 5, 5, 'ACTIVO', 'DISPONIBLE', ''),
-  ('BIEN-006', 'SERIE-006', 6, 6, 6, 6, 'INACTIVO', 'OCUPADO', 'Bien en mantenimiento'),
+  ('BIEN-006', 'SERIE-006', 6, 6, 6, 6, 'INACTIVO', 'OCUPADO', ''),
   ('BIEN-007', 'SERIE-007', 7, 7, 7, 7, 'INACTIVO', 'OCUPADO', ''),
-  ('BIEN-008', 'SERIE-008', 8, 8, 8, 8, 'INACTIVO', 'OCUPADO', 'Bien en almacenamiento'),
+  ('BIEN-008', 'SERIE-008', 8, 8, 8, 8, 'INACTIVO', 'OCUPADO', ''),
   ('BIEN-009', 'SERIE-009', 9, 9, 9, 9, 'ACTIVO', 'OCUPADO', ''),
-  ('BIEN-010', 'SERIE-010', 10, 10, 10, 11, 'INACTIVO', 'OCUPADO', 'Bien en mantenimiento');
-  
+  ('BIEN-010', 'SERIE-010', 10, 10, 10, 11, 'INACTIVO', 'OCUPADO', '');
+
 INSERT INTO asignaciones (usuario_id, bien_id, status)
 VALUES
   (3, 6, 'ACTIVO'),  -- Asignación de BIEN-006 a Pedro (BECARIO)
@@ -110,6 +110,3 @@ VALUES
   (13, 8, 'INACTIVO'),  -- Asignación de BIEN-008 a Fernando (BECARIO)
   (14, 9, 'INACTIVO'),  -- Asignación de BIEN-009 a Gabriela (BECARIO)
   (15, 10, 'ACTIVO');  -- Asignación de BIEN-010 a Diego (BECARIO)
-
-select * from bien;
-drop table asignaciones;
