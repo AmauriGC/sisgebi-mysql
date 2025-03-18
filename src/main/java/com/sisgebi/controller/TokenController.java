@@ -45,7 +45,8 @@ public class TokenController {
         Usuario usuario = usuarioRepository.findByCorreo(correo)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        String token = jwtTokenProvider.generateToken(usuario.getCorreo(), usuario.getRol().name());
+        // Genera el token con el correo, rol y ID del usuario
+        String token = jwtTokenProvider.generateToken(usuario.getCorreo(), usuario.getRol().name(), usuario.getId());
 
         Map<String, String> response = new HashMap<>();
         response.put("token", token);
