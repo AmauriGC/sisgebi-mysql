@@ -28,13 +28,6 @@ public class AsignacionesService {
     @Autowired
     private BienRepository bienRepository;
 
-    // Validar que el usuario sea BECARIO
-    private void validarUsuario(Usuario usuario) {
-        if (usuario.getRol() != RolUsuario.BECARIO) {
-            throw new RuntimeException("Solo los usuarios con rol BECARIO pueden ser asignados a un bien.");
-        }
-    }
-
     // Obtener todas las asignaciones (excluyendo ADMINISTRADORES)
     public List<Asignaciones> getAllAsignaciones() {
         return asignacionesRepository.findAll();
@@ -48,7 +41,6 @@ public class AsignacionesService {
     // Crear una nueva asignación y actualizar la disponibilidad del bien
     public Asignaciones createAsignacion(Asignaciones asignacion) {
         Usuario usuario = asignacion.getUsuario();
-        validarUsuario(usuario); // Validar que el usuario sea BECARIO
 
         Bien bien = asignacion.getBien();
         if (bien == null || bienRepository.findById(bien.getBienId()).isEmpty()) {
@@ -67,11 +59,10 @@ public class AsignacionesService {
         return asignacionesRepository.save(asignacion);
     }
 
-    // Actualizar una asignación (solo para RESPONSABLES y BECARIOS)
+    // Actualizar una asignación
     public Asignaciones updateAsignacion(Long id, Asignaciones asignacion) {
         if (asignacionesRepository.existsById(id)) {
             Usuario usuario = asignacion.getUsuario();
-            validarUsuario(usuario); // Validar que el usuario sea BECARIO
             asignacion.setAsignacionesId(id);
             return asignacionesRepository.save(asignacion);
         }

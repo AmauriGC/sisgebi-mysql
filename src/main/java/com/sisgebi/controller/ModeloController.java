@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,17 +38,54 @@ public class ModeloController {
     }
 
     // Crear un nuevo modelo
-    @PostMapping
-    public ResponseEntity<Modelo> create(@RequestBody Modelo modelo) {
-        Modelo createdModelo = modeloService.create(modelo);
-        return new ResponseEntity<>(createdModelo, HttpStatus.CREATED);
+    @PostMapping(consumes = "multipart/form-data")
+    public ResponseEntity<Modelo> create(
+            @RequestParam("nombreModelo") String nombreModelo,
+            @RequestParam("status") Status status,
+            @RequestParam(value = "foto", required = false) MultipartFile foto) {
+
+        try {
+            Modelo modelo = new Modelo();
+            modelo.setNombreModelo(nombreModelo);
+            modelo.setStatus(status);
+
+            if (foto != null && !foto.isEmpty()) {
+                modelo.setFoto(foto.getBytes());
+            }
+
+            Modelo createdModelo = modeloService.create(modelo);
+            return new ResponseEntity<>(createdModelo, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     // Actualizar modelo
-    @PutMapping("/{id}")
-    public ResponseEntity<Modelo> update(@PathVariable Long id, @RequestBody Modelo modelo) {
-        Modelo updatedModelo = modeloService.update(id, modelo);
-        return updatedModelo != null ? ResponseEntity.ok(updatedModelo) : ResponseEntity.notFound().build();
+    @PutMapping(value = "/{id}", consumes = "multipart/form-data")
+    public ResponseEntity<Modelo> update(
+            @PathVariable Long id,
+            @RequestParam("nombreModelo") String nombreModelo,
+            @RequestParam("status") Status status,
+            @RequestParam(value = "foto", required = false) MultipartFile foto) {
+
+        try {
+            Modelo existingModelo = modeloService.findById(id);
+            if (existingModelo == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            existingModelo.setNombreModelo(nombreModelo);
+            existingModelo.setStatus(status);
+
+            if (foto != null && !foto.isEmpty()) {
+                existingModelo.setFoto(foto.getBytes());
+            }
+
+            Modelo updatedModelo = modeloService.update(id, existingModelo);
+            return ResponseEntity.ok(updatedModelo);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     // Eliminar modelo

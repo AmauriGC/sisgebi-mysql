@@ -25,6 +25,13 @@ public class ModeloService {
         return modeloRepository.findById(id);
     }
 
+
+    // Añade este método que falta
+    public Modelo findById(Long id) {
+        return modeloRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Modelo no encontrado"));
+    }
+
     // Crear un nuevo modelo
     public Modelo create(Modelo modelo) {
         return modeloRepository.save(modelo);
