@@ -40,12 +40,13 @@ public class AsignacionesService {
 
     // Crear una nueva asignación y actualizar la disponibilidad del bien
     public Asignaciones createAsignacion(Asignaciones asignacion) {
-        Usuario usuario = asignacion.getUsuario();
+        // Cargar el usuario completo desde la base de datos
+        Usuario usuario = usuarioRepository.findById(asignacion.getUsuario().getId())
+                .orElseThrow(() -> new RuntimeException("El usuario no existe."));
 
-        Bien bien = asignacion.getBien();
-        if (bien == null || bienRepository.findById(bien.getBienId()).isEmpty()) {
-            throw new RuntimeException("El bien no existe.");
-        }
+        // Cargar el bien completo desde la base de datos
+        Bien bien = bienRepository.findById(asignacion.getBien().getBienId())
+                .orElseThrow(() -> new RuntimeException("El bien no existe."));
 
         // Verificar si el bien ya está ocupado
         if (bien.getDisponibilidad() == Disponibilidad.OCUPADO) {
@@ -54,7 +55,11 @@ public class AsignacionesService {
 
         // Actualizar disponibilidad del bien a OCUPADO
         bien.setDisponibilidad(Disponibilidad.OCUPADO);
-        bienRepository.save(bien); // Guardar el cambio en la base de datos
+        bienRepository.save(bien);
+
+        // Asignar las entidades completas
+        asignacion.setUsuario(usuario);
+        asignacion.setBien(bien);
 
         return asignacionesRepository.save(asignacion);
     }
@@ -75,9 +80,7 @@ public class AsignacionesService {
         if (asignacionesOptional.isPresent()) {
             Asignaciones asignacion = asignacionesOptional.get();
 
-            // Cambiar la asignación a INACTIVO
-            asignacion.setStatus(Status.INACTIVO);
-            asignacionesRepository.save(asignacion);
+            asignacionesRepository.delete(asignacion);
 
             // Recuperar el bien asociado y cambiar su disponibilidad a DISPONIBLE
             Bien bien = asignacion.getBien();
