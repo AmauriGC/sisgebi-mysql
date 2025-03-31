@@ -21,6 +21,7 @@ public interface BienRepository extends JpaRepository<Bien, Long> {
 
 
     @Query("SELECT b FROM Bien b WHERE " +
+            "(:id IS NULL OR b.usuario.id =:id) AND" +
             "(:tipoBienId IS NULL OR b.tipoBien.tipoBienId = :tipoBienId) AND " +
             "(:marcaId IS NULL OR b.marca.marcaId = :marcaId) AND " +
             "(:modeloId IS NULL OR b.modelo.modeloId = :modeloId) AND " +
@@ -28,6 +29,7 @@ public interface BienRepository extends JpaRepository<Bien, Long> {
             "(:status IS NULL OR b.status = :status) AND " +
             "(:disponibilidad IS NULL OR b.disponibilidad = :disponibilidad)")
     List<Bien> filter(
+            @Param("id") Long id,
             @Param("tipoBienId") Long tipoBienId,
             @Param("marcaId") Long marcaId,
             @Param("modeloId") Long modeloId,

@@ -59,6 +59,7 @@ public class BienController {
 
     @GetMapping("/filter")
     public ResponseEntity<List<Bien>> filterBienes(
+            @RequestParam(required = false) Long id,
             @RequestParam(required = false) Long tipoBienId,
             @RequestParam(required = false) Long marcaId,
             @RequestParam(required = false) Long modeloId,
@@ -66,7 +67,7 @@ public class BienController {
             @RequestParam(required = false) Status status,
             @RequestParam(required = false) Disponibilidad disponibilidad) {
 
-        List<Bien> bienes = bienService.filter(tipoBienId, marcaId, modeloId, areaId, status, disponibilidad);
+        List<Bien> bienes = bienService.filter(id, tipoBienId, marcaId, modeloId, areaId, status, disponibilidad);
         return ResponseEntity.ok(bienes);
     }
 }

@@ -25,6 +25,10 @@ public class Bien {
     private String numeroSerie;
 
     @ManyToOne
+    @JoinColumn(name = "id_usuario", nullable = false)
+    private Usuario usuario;
+
+    @ManyToOne
     @JoinColumn(name = "id_tipo_bien", nullable = false)
     private TipoBien tipoBien;
 
@@ -82,6 +86,14 @@ public class Bien {
 
     public void setNumeroSerie(@NotBlank(message = "El número de serie es obligatorio") String numeroSerie) {
         this.numeroSerie = numeroSerie;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     public TipoBien getTipoBien() {

@@ -62,8 +62,8 @@ public class BienService {
     }
 
     // Filtrar bienes según varios atributos
-    public List<Bien> filter(Long tipoBienId, Long marcaId, Long modeloId,
+    public List<Bien> filter(Long id, Long tipoBienId, Long marcaId, Long modeloId,
                              Long areaId, Status status, Disponibilidad disponibilidad) {
-        return bienRepository.filter(tipoBienId, marcaId, modeloId, areaId, status, disponibilidad);
+        return bienRepository.filter(id, tipoBienId, marcaId, modeloId, areaId, status, disponibilidad);
     }
 }
