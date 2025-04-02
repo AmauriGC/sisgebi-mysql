@@ -27,11 +27,15 @@ public class  SecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(request -> {
                     var corsConfig = new org.springframework.web.cors.CorsConfiguration();
-                    corsConfig.setAllowedOrigins(java.util.List.of("http://localhost:5173/"));
-//                    corsConfig.setAllowedOrigins(java.util.List.of("http://localhost:8081/"));
+                    // Lista todos los orígenes permitidos en una sola llamada
+                    corsConfig.setAllowedOrigins(java.util.List.of(
+                            "http://localhost:5173",  // Frontend web (Vite/React)
+                            "http://localhost:8081"   // React Native
+                    ));
                     corsConfig.setAllowedMethods(java.util.List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                     corsConfig.setAllowedHeaders(java.util.List.of("*"));
                     corsConfig.setAllowCredentials(true);
+                    corsConfig.setMaxAge(3600L);  // Cache de opciones CORS por 1 hora
                     return corsConfig;
                 }))
                 .authorizeHttpRequests(auth -> auth
