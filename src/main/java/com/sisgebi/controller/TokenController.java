@@ -46,11 +46,13 @@ public class TokenController {
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
         // Genera el token con el correo, rol y ID del usuario
-        String token = jwtTokenProvider.generateToken(usuario.getCorreo(), usuario.getRol().name(), usuario.getId());
+        String token = jwtTokenProvider.generateToken(usuario.getCorreo(), usuario.getRol().name(), usuario.getId(), usuario.getNombres(), usuario.getApellidos());
 
         Map<String, String> response = new HashMap<>();
         response.put("token", token);
         response.put("rol", usuario.getRol().name());
+        response.put("nombres", usuario.getNombres());
+        response.put("apellidos", usuario.getApellidos());
         return ResponseEntity.ok(response);
     }
 }
